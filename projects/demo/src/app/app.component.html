@@ -1,0 +1,48 @@
+<nc-mxgraph *ngIf="graphData.length > 0" [graphData]="graphData" (onVertexClick)="isCalledBack($event)" style="position: absolute; overflow: auto; border: 2px solid; height: 600px; width: 900px; padding: 30px;"> 
+  <nc-mxgraph-menu (itemId)="readItemType($event)">
+      <div *ngIf="levelMap[selectedNode] == 1">
+          <ul class="my-dropdown">
+              <li *ngFor="let mi of menuItems" (click)="menuItemClicked(selectedNode, mi.id)" style="cursor: pointer;">
+                  <button>{{mi.label}}</button>
+              </li>              
+          </ul>
+      </div>
+      <div *ngIf="levelMap[selectedNode] != 1">
+            <ul class="my-dropdown">
+                <li (click)="menuItemClicked(selectedNode, '_actionConnectOnly')" style="cursor: pointer;">
+                    <button>Link</button>
+                </li>              
+            </ul>
+        </div>
+      <style>
+          .my-dropdown{
+              list-style: none;
+          }
+          .my-dropdown > li > button{
+              padding: 10px;
+              background-color: #f5f5f5;
+              width: 80px !important;
+              word-wrap: break-word;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              -webkit-box-shadow: 1px 1px 4px 0px rgba(68,68,68,0.61);
+              -moz-box-shadow: 1px 1px 4px 0px rgba(68,68,68,0.61);
+              box-shadow: 1px 1px 4px 0px rgba(68,68,68,0.61);
+              border: none;
+              text-align: left;
+              margin-left: -20px;
+              color: #424242;
+              cursor: pointer;
+          }
+          .my-dropdown > li > button:hover{
+              background-color: #e4e4e4;
+          }
+          .my-dropdown > li > button:active{
+              background-color: #dedede;
+          }
+      </style>
+  </nc-mxgraph-menu>
+</nc-mxgraph>
+
+

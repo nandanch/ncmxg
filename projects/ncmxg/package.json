@@ -1,0 +1,10 @@
+{
+  "name": "ncmxg",
+  "version": "1.0.6",
+  "peerDependencies": {
+    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "mxgraph": "^4.0.4",
+    "ncmxg-v6": "../ncmxg"
+  }
+}

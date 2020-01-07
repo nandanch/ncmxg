@@ -16,6 +16,14 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ncmxg": [
+        "dist/ncmxg"
+      ],
+      "ncmxg/*": [
+        "dist/ncmxg/*"
+      ]
+    }
   }
 }
