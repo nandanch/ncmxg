@@ -106,7 +106,15 @@ export class AppComponent {
                     "color": "#13e16a",
                     "levelNumber": 2,
                     "shapeTags": [],
-                    "children": []
+                    "children": [{
+						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F000D7",
+						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
+						"name": "objec093",
+						"color": "#0ff",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}]
                 },
                 {
                     "id": "39C9A0F152C82C6947E510B951D32E298D927F8C709585A2",
@@ -115,7 +123,23 @@ export class AppComponent {
                     "color": "#ffff00",
                     "levelNumber": 2,
                     "shapeTags": [],
-                    "children": []
+                    "children": [{
+						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F001D7",
+						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
+						"name": "objec083",
+						"color": "#0ff",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": [{
+                            "id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F004D7",
+                            "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
+                            "name": "objec033",
+                            "color": "#0ff",
+                            "levelNumber": 3,
+                            "shapeTags": [],
+                            "children": []
+                        }]
+					}]
                 },
                 {
                     "id": "39C9A0F152C82C6947E510B951D32E29C0C92D8AEB671827",
@@ -124,7 +148,15 @@ export class AppComponent {
                     "color": "#008040",
                     "levelNumber": 2,
                     "shapeTags": [],
-                    "children": []
+                    "children": [{
+						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F002D7",
+						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
+						"name": "objec073",
+						"color": "#0ff",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}]
                 },
                 {
                     "id": "39C9A0F152C82C6947E510B951D32E29EE1609345C98F22C",
@@ -133,7 +165,15 @@ export class AppComponent {
                     "color": "#ff8000",
                     "levelNumber": 2,
                     "shapeTags": [],
-                    "children": []
+                    "children": [{
+						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F003D7",
+						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
+						"name": "objec093",
+						"color": "#0ff",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}]
                 }
             ],
             "connections": [
