@@ -55,229 +55,170 @@ export class AppComponent {
 		return levelMap;
 	  }
 
-	  public graphData = [
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-            "name": "Finance",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E29D0D870B8AD62E178",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                    "name": "Generate more revenue",
-                    "color": "#3f92f8",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [
-                        {
-                            "id": "39C9A0F152C82C6947E510B951D32E29AB6FE00E50F263D7",
-                            "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                            "name": "objec01",
-                            "color": "#000",
-                            "levelNumber": 3,
-                            "shapeTags": [],
-                            "children": []
-                        },
-                        {
-                            "id": "39C9A0F152C82C6947E510B951D32E29AB6FE34E50F263D7",
-                            "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                            "name": "objec02",
-                            "color": "#0f0",
-                            "levelNumber": 3,
-                            "shapeTags": [],
-                            "children": []
-                        },
-                        {
-                            "id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F263D7",
-                            "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                            "name": "objec03",
-                            "color": "#0ff",
-                            "levelNumber": 3,
-                            "shapeTags": [],
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E29C87C8E91C11F043C",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                    "name": "Reduce losses",
-                    "color": "#13e16a",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [{
-						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F000D7",
-						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-						"name": "objec093",
-						"color": "#0ff",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}]
-                },
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E298D927F8C709585A2",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                    "name": "Get funding",
-                    "color": "#ffff00",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [{
-						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F001D7",
-						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-						"name": "objec083",
-						"color": "#0ff",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": [{
-                            "id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F004D7",
-                            "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                            "name": "objec033",
-                            "color": "#0ff",
-                            "levelNumber": 3,
-                            "shapeTags": [],
-                            "children": []
-                        }]
-					}]
-                },
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E29C0C92D8AEB671827",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                    "name": "test",
-                    "color": "#008040",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [{
-						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F002D7",
-						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-						"name": "objec073",
-						"color": "#0ff",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}]
-                },
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E29EE1609345C98F22C",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-                    "name": "test2",
-                    "color": "#ff8000",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [{
-						"id": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F003D7",
-						"parentId": "39C9A0F152C82C6947E510B951D32E292AFD0AF506DE62C1",
-						"name": "objec093",
-						"color": "#0ff",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}]
-                }
-            ],
-            "connections": [
-                {
-                    "from": "39C9A0F152C82C6947E510B951D32E29AB6FE00E50F263D7",
-                    "to": "39C9A0F152C82C6947E510B951D32E29D0D870B8AD62E178"
-                },
-                {
-                    "from": "39C9A0F152C82C6947E510B951D32E29AB6FE34E50F263D7",
-                    "to": "39C9A0F152C82C6947E510B951D32E29D0D870B8AD62E178"
-                },
-                {
-                    "from": "3E3GA0F152C82C6947E510B951D32E29AB6FE34E50F263D7",
-                    "to": "39C9A0F152C82C6947E510B951D32E29D0D870B8AD62E178"
-                }
-            ]
-        },
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E29ACB905BAE0DE5E35",
-            "name": "Customers",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E29D15A2FA244AAD89A",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E29ACB905BAE0DE5E35",
-                    "name": "Get more customers",
-                    "color": "#000",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": []
-                }
-            ],
-            "connections": [
-                
-            ]
-        },
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E295C47ED392D341065",
-            "name": "p1",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E298CF1D96B4082997C",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E295C47ED392D341065",
-                    "name": "t1",
-                    "color": "#000",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": [
-                        {
-                            "id": "39C9A0F152C82C6947E510B951D32E291FF11DF5712CF1E6",
-                            "parentId": "39C9A0F152C82C6947E510B951D32E295C47ED392D341065",
-                            "name": "o1",
-                            "color": "#000",
-                            "levelNumber": 3,
-                            "shapeTags": [],
-                            "children": []
-                        }
-                    ]
-                },
-                {
-                    "id": "39C9A0F152C82C6947E510B951D32E2940CC8DE3C4CAA5DF",
-                    "parentId": "39C9A0F152C82C6947E510B951D32E295C47ED392D341065",
-                    "name": "t2",
-                    "color": "#000",
-                    "levelNumber": 2,
-                    "shapeTags": [],
-                    "children": []
-                }
-            ],
-            "connections": [
-                {
-                    "from": "39C9A0F152C82C6947E510B951D32E291FF11DF5712CF1E6",
-                    "to": "39C9A0F152C82C6947E510B951D32E298CF1D96B4082997C"
-                }
-            ]
-        },
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E29A2EECBB291898CF0",
-            "name": "p2",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [],
-            "connections": []
-        },
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E299F6FE171771B8CB8",
-            "name": "p3",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [],
-            "connections": []
-        },
-        {
-            "id": "39C9A0F152C82C6947E510B951D32E29CBD8894A654F7BC3",
-            "name": "p4",
-            "color": "#000",
-            "levelNumber": 1,
-            "children": [],
-            "connections": []
-        }
-    ];	
+	  public graphData = [{
+        "id": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+        "name": "p1",
+        "color": "#000",
+        "levelNumber": 1,
+        "children": [{
+                "id": "39C9A0F152C82C6947E510B951D32E294C531DA26C7FA55D",
+                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                "name": "t1",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": [{
+                        "id": "39C9A0F152C82C6947E510B951D32E296374A51A1005DE7E",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                        "name": "o1",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }
+                ]
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E29305628EB9837C3A6",
+                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                "name": "this is a very long name test for the first level of strategy map nodes",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": []
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E29727E6B331F5A09C5",
+                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                "name": "t3",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": [{
+                        "id": "39C9A0F152C82C6947E510B951D32E2901A7F80231A4495F",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                        "name": "o2",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }
+                ]
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E29E61D6A01347E3FB7",
+                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                "name": "t4",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": []
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E2968E0CE7537008831",
+                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
+                "name": "t5",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": []
+            }
+        ],
+        "connections": [{
+                "from": "39C9A0F152C82C6947E510B951D32E294C531DA26C7FA55D",
+                "to": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796"
+            }, {
+                "from": "39C9A0F152C82C6947E510B951D32E29E61D6A01347E3FB7",
+                "to": "39C9A0F152C82C6947E510B951D32E29A61BD2CA344CEA3B"
+            }
+        ]
+    }, {
+        "id": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+        "name": "p2",
+        "color": "#000",
+        "levelNumber": 1,
+        "children": [{
+                "id": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
+                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                "name": "pt1",
+                "color": "#e62437",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": [{
+                        "id": "39C9A0F152C82C6947E510B951D32E29DA8979A4EF179404",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                        "name": "po1",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }, {
+                        "id": "39C9A0F152C82C6947E510B951D32E29EB7227F3A0224518",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                        "name": "po2",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }, {
+                        "id": "39C9A0F152C82C6947E510B951D32E2918778B0C04A2EF32",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                        "name": "po4",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }, {
+                        "id": "39C9A0F152C82C6947E510B951D32E2943638987AF1E7601",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                        "name": "po5",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }
+                ]
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E29CCB56BE636216800",
+                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                "name": "pt2",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": []
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E29A61BD2CA344CEA3B",
+                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                "name": "pt3",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": [{
+                        "id": "39C9A0F152C82C6947E510B951D32E29AE8DAD1BC2BA678B",
+                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                        "name": "po3",
+                        "color": "#000",
+                        "levelNumber": 3,
+                        "shapeTags": [],
+                        "children": []
+                    }
+                ]
+            }, {
+                "id": "39C9A0F152C82C6947E510B951D32E2901445C966072A881",
+                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
+                "name": "pt4",
+                "color": "#000",
+                "levelNumber": 2,
+                "shapeTags": [],
+                "children": []
+            }
+        ],
+        "connections": [{
+                "from": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
+                "to": "39C9A0F152C82C6947E510B951D32E29727E6B331F5A09C5"
+            }, {
+                "from": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
+                "to": "39C9A0F152C82C6947E510B951D32E29305628EB9837C3A6"
+            }
+        ]
+    }
+];
 
 	  ngOnInit(){
 		  this.levelMap = this.mapNodeLevels(this.graphData, this.levelMap);

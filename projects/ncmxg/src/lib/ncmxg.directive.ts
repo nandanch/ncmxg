@@ -168,7 +168,13 @@ export class NcmxgDirective implements AfterViewInit {
     style1[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
     style1[mxConstants.STYLE_DASHED] = 0;
     graph.getStylesheet().putCellStyle('ROUNDED', style1);
-    graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'topToBottomEdgeStyle';//mxEdgeStyle.ElbowConnector;//'topToBottomEdgeStyle';
+    var styleEdge1 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
+    styleEdge1['edgeStyle'] = 'topToBottomEdgeStyle';
+    graph.getStylesheet().putCellStyle('TBEdge', styleEdge1);
+    var styleEdge2 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
+    styleEdge2['edgeStyle'] = mxEdgeStyle.EntityRelation;
+    graph.getStylesheet().putCellStyle('LinkEdge', styleEdge2);
+    //graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'topToBottomEdgeStyle';//mxEdgeStyle.ElbowConnector;//'topToBottomEdgeStyle';
   }
 
   private addSwimlanes(graph: any, parent: any) {    
@@ -316,7 +322,7 @@ export class NcmxgDirective implements AfterViewInit {
     let offsetX = 0;
     for (let child of children) {
       let currentInserted = graph.insertVertex(currentLayer, child.id, child.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
-      graph.insertEdge(currentLayer, null, '', nodeParent, currentInserted, 'strokeColor=#B5B5B5;strokeWidth=2');
+      graph.insertEdge(currentLayer, null, '', nodeParent, currentInserted, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
         var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon +'.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
@@ -399,15 +405,18 @@ export class NcmxgDirective implements AfterViewInit {
   private makeNodeConnections(graph: any, parent: any) {
     this.gdata.forEach(perspective => {
       perspective.connections.forEach(item => {
-        item.children.forEach(dataNode => {          
+        /* perspective.children.forEach(dataNode => {          
           let layer = graph.model.getCell(dataNode.name.trim().replace(/\s/g, "_").toLowerCase());
           let fromNode = graph.model.getCell(item.from);
           let toNode = graph.model.getCell(item.to);
           graph.insertEdge(layer, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0');
-        })
-        /* let fromNode = graph.model.getCell(item.from);
+        }); */
+        /* let topmostNodeId = this.gdata[this.gdata.length - 1].children[this.gdata[this.gdata.length - 1].children.length - 1].name.trim().replace(/\s/g, "_").toLowerCase();
+        console.log(topmostNodeId);
+        let layer = graph.model.getCell(topmostNodeId); */
+        let fromNode = graph.model.getCell(item.from);
         let toNode = graph.model.getCell(item.to);
-        graph.insertEdge(parent, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0'); */
+        graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
       });
     });
   }
