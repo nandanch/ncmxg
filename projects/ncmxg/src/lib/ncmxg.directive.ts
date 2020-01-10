@@ -126,7 +126,7 @@ export class NcmxgDirective implements AfterViewInit {
         this.addNodes(this.graph);
         
         /** Add all connections */
-        //this.makeNodeConnections(this.graph, parent);
+        this.makeNodeConnections(this.graph, parent);
       } finally { 
         //layout.execute(parent);
         //new mxParallelEdgeLayout(this.graph).execute(parent);
@@ -396,15 +396,21 @@ export class NcmxgDirective implements AfterViewInit {
     }
   } */
 
-  /* private makeNodeConnections(graph: any, parent: any) {
+  private makeNodeConnections(graph: any, parent: any) {
     this.gdata.forEach(perspective => {
       perspective.connections.forEach(item => {
-        let fromNode = graph.model.getCell(item.from);
+        item.children.forEach(dataNode => {          
+          let layer = graph.model.getCell(dataNode.name.trim().replace(/\s/g, "_").toLowerCase());
+          let fromNode = graph.model.getCell(item.from);
+          let toNode = graph.model.getCell(item.to);
+          graph.insertEdge(layer, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0');
+        })
+        /* let fromNode = graph.model.getCell(item.from);
         let toNode = graph.model.getCell(item.to);
-        graph.insertEdge(parent, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0');
+        graph.insertEdge(parent, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0'); */
       });
     });
-  } */
+  }
 
   ngOnDestroy(){
     this.graph.destroy();
