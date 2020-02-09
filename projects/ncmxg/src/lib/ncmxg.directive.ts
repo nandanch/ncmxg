@@ -29,7 +29,7 @@ export class NcmxgDirective implements AfterViewInit {
   @Input() gwunit: string; */
   @Input() gwidth: number;
   @Input() gdata: Array<any>;
-  onNodeMenuClicked:EventEmitter<any> = new EventEmitter();
+  onNodeMenuClicked: EventEmitter<any> = new EventEmitter();
   private graph: any;
   private element: HTMLInputElement;
   private elMap: {};
@@ -40,27 +40,49 @@ export class NcmxgDirective implements AfterViewInit {
     this.element = elRef.nativeElement;
   }
 
-  ngOnInit(){
+  ngOnInit() {
     window['nc'] = window['nc'] || {};
     window['nc']['mxg'] = window['nc']['mxg'] || {};
     window['nc']['mxg']['menuCallback'] = this.bindPublic.bind(this);
   }
 
   bindPublic(value) {
-      this.zone.run(() => this.callMenuItem(value));
+    this.zone.run(() => this.callMenuItem(value));
   }
 
-  callMenuItem(value: any){
-    this.onNodeMenuClicked.emit({"id": value, "x": this.getOffset(value).left, "y": this.getOffset(value).top});
+  callMenuItem(value: any) {
+    var _rect = this.getOffset(value);
+    this.onNodeMenuClicked.emit({ "id": value, "x": _rect.left, "y": _rect.top });
   }
 
   getOffset(elId) {
     var el = document.getElementById(elId);
-    const rect = el.getBoundingClientRect();
+    var rect = el.getBoundingClientRect();
     return {
-      left: rect.left,// + window.scrollX,
-      top: rect.top// + window.scrollY
-    };
+      left: rect.left,
+      top: rect.top
+    }
+    /* try {
+      let parentElem = el.parentElement;
+      while (!parentElem.matches("g")) {
+        parentElem = parentElem.parentElement;
+      }
+
+      if (parentElem.parentElement.matches("g")) {
+        parentElem = parentElem.parentElement;
+        let mynode: any = parentElem.previousSibling.firstChild;
+
+        return {
+          left: mynode.x.baseVal.value + mynode.width.baseVal.value,
+          top: mynode.y.baseVal.value + mynode.height.baseVal.value
+        }
+      }
+    } catch (e) {
+      return {
+        left: el.getBoundingClientRect().left,
+        top: el.getBoundingClientRect().top
+      }
+    } */
   }
 
   private flatten(data: Array<any>, levelMap: ({ [index: string]: any[] }), level: number) {
@@ -79,7 +101,7 @@ export class NcmxgDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     this.gdata = this.gdata || [];
     this.gwidth = this.gwidth || 120;
-    
+
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
     //console.log("this.elMap: ", this.elMap);
@@ -96,6 +118,7 @@ export class NcmxgDirective implements AfterViewInit {
       this.graph.setCellsMovable(true);
       this.graph.setAutoSizeCells(true);
       this.graph.setHtmlLabels(true);
+      this.graph.setTolerance(20);
 
       this.configureGraphStyles(this.graph);
 
@@ -115,19 +138,19 @@ export class NcmxgDirective implements AfterViewInit {
       new mxSwimlaneManager(this.graph);
 
       var parent = this.graph.getDefaultParent();
-      
+
 
       try {
         this.addSwimlanes(this.graph, parent);
         /** Add perspectives and objectives */
-        
+
         //this.addVertices(this.graph);
 
         this.addNodes(this.graph);
-        
+
         /** Add all connections */
         this.makeNodeConnections(this.graph, parent);
-      } finally { 
+      } finally {
         //layout.execute(parent);
         //new mxParallelEdgeLayout(this.graph).execute(parent);
         this.graph.setCellsResizable(true);
@@ -177,7 +200,7 @@ export class NcmxgDirective implements AfterViewInit {
     //graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'topToBottomEdgeStyle';//mxEdgeStyle.ElbowConnector;//'topToBottomEdgeStyle';
   }
 
-  private addSwimlanes(graph: any, parent: any) {    
+  private addSwimlanes(graph: any, parent: any) {
     let laneDepth = {};
     for (let depth = 1; depth < Object.keys(this.elMap).length; depth++) {
       for (let vertex of this.elMap[depth]) {
@@ -189,10 +212,10 @@ export class NcmxgDirective implements AfterViewInit {
         }
       }
     }
-    
-    if(Object.keys(laneDepth).length < this.elMap[0].length){
-      for(let excludedVertex of this.elMap[0]){
-        if(!laneDepth.hasOwnProperty(excludedVertex.id)) {
+
+    if (Object.keys(laneDepth).length < this.elMap[0].length) {
+      for (let excludedVertex of this.elMap[0]) {
+        if (!laneDepth.hasOwnProperty(excludedVertex.id)) {
           laneDepth[excludedVertex.id] = 1;
         }
       }
@@ -202,22 +225,22 @@ export class NcmxgDirective implements AfterViewInit {
     let minLaneGap = 100;
 
     graph.getModel().beginUpdate();
-    try{
+    try {
       for (let perspective of this.elMap[0]) {
         var layer = this.root.insert(new mxCell());
-        var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect" id='+perspective.id+' onClick="nc.mxg.menuCallback(\''+perspective.id+'\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20+(laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
+        var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
         laneGap += laneDepth[perspective.id] * minLaneGap;
         lane.setConnectable(false);
-  
+
         //use foldable=0 to hide the expander icon in swimlane title
         lane.setStyle(lane.getStyle().concat('swimlaneFillColor=#eee;foldable=0;resizable=1'));
       }
     } finally {
-      graph.getModel().endUpdate();  
+      graph.getModel().endUpdate();
     }
   }
 
-  private addNodes(graph: any){
+  private addNodes(graph: any) {
     let layers = {};
 
     let compactTreelayout = new mxCompactTreeLayout(graph, false);
@@ -228,19 +251,19 @@ export class NcmxgDirective implements AfterViewInit {
     compactTreelayout.resizeParent = true;
     compactTreelayout.moveParent = false;
     graph.keepEdgesInBackground = false;
-    
+
     let layerX = 0;
     let visitedPerspective = 0;
-    for(let node of this.elMap[1]){
+    for (let node of this.elMap[1]) {
       let offsetX = 0;
 
-      if(layers[node.parentId] == undefined || layers[node.parentId].length == undefined ){
+      if (layers[node.parentId] == undefined || layers[node.parentId].length == undefined) {
         layers[node.parentId] = [];
       }
-      
+
       let newLayer = new mxCell();
       newLayer.setId(node.name.trim().replace(/\s/g, "_").toLowerCase());
-      layers[node.parentId].push(graph.model.getCell(node.parentId).insert(newLayer));  
+      layers[node.parentId].push(graph.model.getCell(node.parentId).insert(newLayer));
 
       if (visitedPerspective == Object.keys(layers).indexOf(node.parentId)) {
         if (layers[node.parentId].length > 1) {
@@ -254,7 +277,7 @@ export class NcmxgDirective implements AfterViewInit {
       }
 
       let currentLayer = layers[node.parentId][layers[node.parentId].length - 1];
-      currentLayer.setGeometry(new mxGeometry(layerX,20, 0, 0));
+      currentLayer.setGeometry(new mxGeometry(layerX, 20, 0, 0));
       graph.getModel().beginUpdate();
 
       let insertedNode = null;
@@ -262,16 +285,16 @@ export class NcmxgDirective implements AfterViewInit {
         insertedNode = graph.insertVertex(currentLayer, node.id, node.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
 
         for (let icon of node.shapeTags) {
-          var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon +'.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
+          var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
           offsetX += 14;
         }
 
-        let styleString : string = insertedNode.getStyle();
+        let styleString: string = insertedNode.getStyle();
 
-        styleString = styleString.concat(';'+mxConstants.STYLE_FONTSTYLE+'='+mxConstants.FONT_BOLD);
-        let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:'+node.color+';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="'+node.avgRating+'">'+node.avgRating+'</span></div>';
-        let labelString = '<div style="width: 7px;height: 40px;background:'+node.color+';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="'+node.name+'">'+node.name+'&nbsp;<span class="noselect" id='+node.id+' onClick="nc.mxg.menuCallback(\''+node.id+'\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
+        styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
+        let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + node.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + node.avgRating + '">' + node.avgRating + '</span></div>';
+        let labelString = '<div style="width: 7px;height: 40px;background:' + node.color + ';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + node.name + '">' + node.name + '&nbsp;<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
         let finalString = "";
 
         if (node.avgRating) {
@@ -284,7 +307,7 @@ export class NcmxgDirective implements AfterViewInit {
 
         graph.model.setStyle(insertedNode, styleString);
 
-        if(node.children.length > 0){
+        if (node.children.length > 0) {
           this.addChildNodes(graph, currentLayer, insertedNode, node.children)
         }
 
@@ -295,12 +318,11 @@ export class NcmxgDirective implements AfterViewInit {
     }
 
     graph.getModel().beginUpdate();
-    try{
-      for(let per of Object.keys(layers)){
-        for(let layer of layers[per]){
-          console.log(layer);
-          if(layer.parent.children.length > 1){
-            if(layer.children.length < 2){
+    try {
+      for (let per of Object.keys(layers)) {
+        for (let layer of layers[per]) {
+          if (layer.parent.children.length > 1) {
+            if (layer.children.length < 2) {
               let currentGeometry = layer.getGeometry();
               graph.translateCell(layer, 0, -currentGeometry.y + 80)
             } else {
@@ -325,16 +347,16 @@ export class NcmxgDirective implements AfterViewInit {
       graph.insertEdge(currentLayer, null, '', nodeParent, currentInserted, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
-        var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon +'.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
+        var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
         graph.addCellOverlay(currentInserted, overlay);
         offsetX += 14;
       }
 
-      let styleString : string = currentInserted.getStyle();
+      let styleString: string = currentInserted.getStyle();
 
-      styleString = styleString.concat(';'+mxConstants.STYLE_FONTSTYLE+'='+mxConstants.FONT_BOLD);
-      let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:'+child.color+';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="'+child.avgRating+'">'+child.avgRating+'</span></div>';
-      let labelString = '<div style="width: 7px;height: 40px;background:'+child.color+';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="'+child.name+'">'+child.name+'&nbsp;<span class="noselect" id='+child.id+' onClick="nc.mxg.menuCallback(\''+child.id+'\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
+      styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
+      let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + child.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + child.avgRating + '">' + child.avgRating + '</span></div>';
+      let labelString = '<div style="width: 7px;height: 40px;background:' + child.color + ';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + child.name + '">' + child.name + '&nbsp;<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
       let finalString = "";
 
       if (child.avgRating) {
@@ -421,7 +443,7 @@ export class NcmxgDirective implements AfterViewInit {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.graph.destroy();
   }
 }
