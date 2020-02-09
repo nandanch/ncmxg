@@ -250,6 +250,7 @@ export class NcmxgDirective implements AfterViewInit {
     compactTreelayout.nodeDistance = 10;
     compactTreelayout.resizeParent = true;
     compactTreelayout.moveParent = false;
+    compactTreelayout.invert = true;
     graph.keepEdgesInBackground = false;
 
     let layerX = 0;
