@@ -344,7 +344,7 @@ export class NcmxgDirective implements AfterViewInit {
     let offsetX = 0;
     for (let child of children) {
       let currentInserted = graph.insertVertex(currentLayer, child.id, child.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
-      graph.insertEdge(currentLayer, null, '', nodeParent, currentInserted, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
+      graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
         var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
