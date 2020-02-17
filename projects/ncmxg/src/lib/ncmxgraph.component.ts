@@ -67,7 +67,6 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.containerWidth = this.el.nativeElement.offsetWidth - 60;
     this.mxdata = this.graphData;
-    console.log("container width: ", this.el.nativeElement.offsetWidth);
   }
 
   ngAfterViewInit(): void {

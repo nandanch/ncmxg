@@ -26,9 +26,7 @@ export class NcmxmenuComponent implements OnInit {
     this.menuStateOpened.subscribe((item:any) => {
       this.setMenuDisplayed(item.state);
       if(item.state){
-        this.renderer.addClass(this.el.nativeElement.firstChild, 'menudiv');
-        //this.renderer.setAttribute(this.el.nativeElement.firstChild, "itemid", "node5");
-        console.log("menu display");
+        this.renderer.addClass(this.el.nativeElement.firstChild, 'menudiv');        
         this.itemId.emit(item.id);
         setTimeout(() => {
           this.setUpExternalClickListener();

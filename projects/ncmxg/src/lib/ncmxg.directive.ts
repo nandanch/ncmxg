@@ -23,10 +23,6 @@ declare var mxGeometry: any;
   selector: '[ncmxGraphlib]'
 })
 export class NcmxgDirective implements AfterViewInit {
-  /* @Input() gheight: Number;
-  @Input() gwidth: Number;
-  @Input() ghunit: string;
-  @Input() gwunit: string; */
   @Input() gwidth: number;
   @Input() gdata: Array<any>;
   onNodeMenuClicked: EventEmitter<any> = new EventEmitter();
@@ -57,32 +53,22 @@ export class NcmxgDirective implements AfterViewInit {
 
   getOffset(elId) {
     var el = document.getElementById(elId);
-    var rect = el.getBoundingClientRect();
-    return {
-      left: rect.left,
-      top: rect.top
+    let parentElem:any = el.parentElement;
+    while (!parentElem.matches("foreignObject")) {
+      parentElem = parentElem.parentElement;
     }
-    /* try {
-      let parentElem = el.parentElement;
-      while (!parentElem.matches("g")) {
-        parentElem = parentElem.parentElement;
-      }
 
-      if (parentElem.parentElement.matches("g")) {
-        parentElem = parentElem.parentElement;
-        let mynode: any = parentElem.previousSibling.firstChild;
-
-        return {
-          left: mynode.x.baseVal.value + mynode.width.baseVal.value,
-          top: mynode.y.baseVal.value + mynode.height.baseVal.value
-        }
-      }
-    } catch (e) {
-      return {
-        left: el.getBoundingClientRect().left,
-        top: el.getBoundingClientRect().top
-      }
-    } */
+    let left = parentElem.getScreenCTM().e;
+    if(el.classList.contains("ncmxg-perspective")){
+      left += 20;
+    } else {
+      left += 60;
+    }
+    
+    return {
+      left: left,
+      top: parentElem.getScreenCTM().f
+    }
   }
 
   private flatten(data: Array<any>, levelMap: ({ [index: string]: any[] }), level: number) {
@@ -104,7 +90,6 @@ export class NcmxgDirective implements AfterViewInit {
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
-    //console.log("this.elMap: ", this.elMap);
     if (!mxClient.isBrowserSupported()) {
       mxUtils.error('Browser is not supported!', 200, false);
     }
@@ -122,19 +107,6 @@ export class NcmxgDirective implements AfterViewInit {
 
       this.configureGraphStyles(this.graph);
 
-      /* var layout = new mxStackLayout(this.graph, false);
-      layout.resizeParent = true;
-      layout.fill = true;
-
-      var layoutMgr = new mxLayoutManager(this.graph);
-      layoutMgr.getLayout = function (cell) {
-        return layout;
-      };
-
-      this.graph.isCellFoldable = function (cell) {
-        return false;
-      }; */
-
       new mxSwimlaneManager(this.graph);
 
       var parent = this.graph.getDefaultParent();
@@ -144,15 +116,11 @@ export class NcmxgDirective implements AfterViewInit {
         this.addSwimlanes(this.graph, parent);
         /** Add perspectives and objectives */
 
-        //this.addVertices(this.graph);
-
         this.addNodes(this.graph);
 
         /** Add all connections */
         this.makeNodeConnections(this.graph, parent);
       } finally {
-        //layout.execute(parent);
-        //new mxParallelEdgeLayout(this.graph).execute(parent);
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
       }
@@ -228,7 +196,7 @@ export class NcmxgDirective implements AfterViewInit {
     try {
       for (let perspective of this.elMap[0]) {
         var layer = this.root.insert(new mxCell());
-        var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
+        var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect ncmxg-perspective" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
         laneGap += laneDepth[perspective.id] * minLaneGap;
         lane.setConnectable(false);
 
@@ -376,67 +344,9 @@ export class NcmxgDirective implements AfterViewInit {
     }
   }
 
-  /* private addVertices(graph: any) {
-    let ypos = 40;
-    let laneMap = {};
-    //console.log(this.elMap);
-    for (let depth = 1; depth < Object.keys(this.elMap).length; depth++) {
-      let xpos = 40;
-      laneMap = {};
-      for (let vertex of this.elMap[depth]) {
-        let parent = graph.model.getCell(vertex.parentId);
-        let insertedNode = null;
-        let offsetX = 0;
-        if (!laneMap[parent.id]) {
-          //reset xpos for each swimlane
-          xpos = 40;
-          insertedNode = graph.insertVertex(parent, vertex.id, vertex.name, xpos-25, ypos+30, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
-          laneMap[parent.id] = true;
-        }
-        else {
-          insertedNode = graph.insertVertex(parent, vertex.id, vertex.name, xpos-25, ypos+30, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
-        }
-
-        for (let icon of vertex.shapeTags) {
-          var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon +'.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
-          graph.addCellOverlay(insertedNode, overlay);
-          offsetX += 14;
-        }
-
-        let styleString : string = insertedNode.getStyle();
-
-        styleString = styleString.concat(';'+mxConstants.STYLE_FONTSTYLE+'='+mxConstants.FONT_BOLD);
-        let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:'+vertex.color+';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="'+vertex.avgRating+'">'+vertex.avgRating+'</span></div>';
-        let labelString = '<div style="width: 7px;height: 40px;background:'+vertex.color+';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="'+vertex.name+'">'+vertex.name+'&nbsp;<span class="noselect" id='+vertex.id+' onClick="nc.mxg.menuCallback(\''+vertex.id+'\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
-        let finalString = "";
-
-        if (vertex.avgRating) {
-          finalString = bubbleString + labelString;
-        } else {
-          finalString = labelString;
-        }
-
-        insertedNode.setValue(finalString);
-
-        graph.model.setStyle(insertedNode, styleString);
-        xpos += 270;
-      }
-      ypos += 100;
-    }
-  } */
-
   private makeNodeConnections(graph: any, parent: any) {
     this.gdata.forEach(perspective => {
       perspective.connections.forEach(item => {
-        /* perspective.children.forEach(dataNode => {          
-          let layer = graph.model.getCell(dataNode.name.trim().replace(/\s/g, "_").toLowerCase());
-          let fromNode = graph.model.getCell(item.from);
-          let toNode = graph.model.getCell(item.to);
-          graph.insertEdge(layer, null, null, fromNode, toNode, 'strokeColor=#B5B5B5;strokeWidth=2;sourcePort=east;targetPort=south;rounded=0');
-        }); */
-        /* let topmostNodeId = this.gdata[this.gdata.length - 1].children[this.gdata[this.gdata.length - 1].children.length - 1].name.trim().replace(/\s/g, "_").toLowerCase();
-        console.log(topmostNodeId);
-        let layer = graph.model.getCell(topmostNodeId); */
         let fromNode = graph.model.getCell(item.from);
         let toNode = graph.model.getCell(item.to);
         graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
