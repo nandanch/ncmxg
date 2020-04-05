@@ -18,6 +18,7 @@ declare var mxCompactTreeLayout: any;
 declare var mxCell: any;
 declare var mxGraphModel: any;
 declare var mxGeometry: any;
+declare var mxCellTracker: any;
 
 @Directive({
   selector: '[ncmxGraphlib]'
@@ -113,6 +114,10 @@ export class NcmxgDirective implements AfterViewInit {
 
       var parent = this.graph.getDefaultParent();
 
+      var highlight = new mxCellTracker(this.graph, '#5fefae', function(_mxcell){
+        if(!_mxcell.state.cell.vertex)
+            return _mxcell.state.cell;
+      });
 
       try {
         this.addSwimlanes(this.graph, parent);
@@ -220,7 +225,6 @@ export class NcmxgDirective implements AfterViewInit {
         var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect ncmxg-perspective" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
         laneGap += laneDepth[perspective.id] * minLaneGap;
         lane.setConnectable(false);
-
         //use foldable=0 to hide the expander icon in swimlane title
         lane.setStyle(lane.getStyle().concat('swimlaneFillColor=#eee;foldable=0;resizable=1'));
       }
@@ -267,7 +271,7 @@ export class NcmxgDirective implements AfterViewInit {
       }
 
       let currentLayer = layers[node.parentId][layers[node.parentId].length - 1];
-      currentLayer.setGeometry(new mxGeometry(layerX, 20, 0, 0));
+      currentLayer.setGeometry(new mxGeometry(layerX + 30, 20, 0, 0));
       graph.getModel().beginUpdate();
 
       let insertedNode = null;
