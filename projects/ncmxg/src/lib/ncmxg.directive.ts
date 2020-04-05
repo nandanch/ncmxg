@@ -31,6 +31,7 @@ export class NcmxgDirective implements AfterViewInit {
   private elMap: {};
   private root: any;
   private model: any;
+  private colorTabMap:any = {};
 
   constructor(private elRef: ElementRef, private zone: NgZone) {
     this.element = elRef.nativeElement;
@@ -90,6 +91,7 @@ export class NcmxgDirective implements AfterViewInit {
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
+
     if (!mxClient.isBrowserSupported()) {
       mxUtils.error('Browser is not supported!', 200, false);
     }
@@ -120,10 +122,21 @@ export class NcmxgDirective implements AfterViewInit {
 
         /** Add all connections */
         this.makeNodeConnections(this.graph, parent);
+
+        this.addColorTabs();
+        
       } finally {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
       }
+    }
+  }
+
+  private addColorTabs() {
+    for (let colorKey in this.colorTabMap) {
+      let pNode = this.graph.model.getCell(colorKey);
+      let colorCodeTab = this.graph.insertVertex(pNode, null, '', -10, 0, 6, 40, ';COLORTAB;foldable=0;fillColor=' + this.colorTabMap[colorKey]);
+      colorCodeTab.geometry.offset = new mxPoint(-180, -40);
     }
   }
 
@@ -149,7 +162,7 @@ export class NcmxgDirective implements AfterViewInit {
     var style1 = mxUtils.clone(graph.getStylesheet().getDefaultVertexStyle());
     style1[mxConstants.STYLE_SHAPE] = mxConstants.SHAPE_RECTANGLE;
     style1[mxConstants.STYLE_OPACITY] = 100;
-    style1[mxConstants.STYLE_ROUNDED] = 1;
+    //style1[mxConstants.STYLE_ROUNDED] = 1;
     style1[mxConstants.STYLE_FONTSIZE] = 12;
     style1[mxConstants.STYLE_FONTSTYLE] = mxConstants.DEFAULT_FONTSTYLE;
     style1[mxConstants.STYLE_FONTCOLOR] = '#757575';
@@ -158,7 +171,15 @@ export class NcmxgDirective implements AfterViewInit {
     style1[mxConstants.STYLE_STROKEWIDTH] = 2;
     style1[mxConstants.STYLE_LABEL_BACKGROUNDCOLOR] = 'none';
     style1[mxConstants.STYLE_DASHED] = 0;
+    style1[mxConstants.STYLE_FOLDABLE] = 0;
     graph.getStylesheet().putCellStyle('ROUNDED', style1);
+    
+    var style2 = mxUtils.clone(style1);
+    //style2[mxConstants.STYLE_ROUNDED] = 1;
+    style2[mxConstants.STYLE_STROKEWIDTH] = 0;
+    style2[mxConstants.STYLE_FOLDABLE] = 0;
+    graph.getStylesheet().putCellStyle('COLORTAB', style2);
+
     var styleEdge1 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
     styleEdge1['edgeStyle'] = 'topToBottomEdgeStyle';
     graph.getStylesheet().putCellStyle('TBEdge', styleEdge1);
@@ -251,8 +272,7 @@ export class NcmxgDirective implements AfterViewInit {
 
       let insertedNode = null;
       try {
-        insertedNode = graph.insertVertex(currentLayer, node.id, node.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
-
+        insertedNode = graph.insertVertex(currentLayer, node.id, node.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;foldable=0;');
         for (let icon of node.shapeTags) {
           var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
@@ -263,9 +283,9 @@ export class NcmxgDirective implements AfterViewInit {
 
         styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
         let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + node.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + node.avgRating + '">' + node.avgRating + '</span></div>';
-        let labelString = '<div style="width: 7px;height: 40px;background:' + node.color + ';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + node.name + '">' + node.name + '&nbsp;<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
+        let labelString = '<p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + node.name + '">' + node.name + '&nbsp;<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
         let finalString = "";
-
+        this.colorTabMap[node.id] = node.color;
         if (node.avgRating) {
           finalString = bubbleString + labelString;
         } else {
@@ -325,9 +345,9 @@ export class NcmxgDirective implements AfterViewInit {
 
       styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
       let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + child.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + child.avgRating + '">' + child.avgRating + '</span></div>';
-      let labelString = '<div style="width: 7px;height: 40px;background:' + child.color + ';position: fixed;left: -90px;top: -19px;border-top-left-radius: 30px;border-bottom-left-radius: 30px;"></div><p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + child.name + '">' + child.name + '&nbsp;<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
+      let labelString = '<p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + child.name + '">' + child.name + '&nbsp;<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
       let finalString = "";
-
+      this.colorTabMap[child.id] = child.color;
       if (child.avgRating) {
         finalString = bubbleString + labelString;
       } else {
