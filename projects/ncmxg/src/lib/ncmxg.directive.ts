@@ -114,7 +114,7 @@ export class NcmxgDirective implements AfterViewInit {
 
       var parent = this.graph.getDefaultParent();
 
-      var highlight = new mxCellTracker(this.graph, '#5fefae', function(_mxcell){
+      var highlight = new mxCellTracker(this.graph, '#3a83ff', function(_mxcell){
         if(!_mxcell.state.cell.vertex)
             return _mxcell.state.cell;
       });
