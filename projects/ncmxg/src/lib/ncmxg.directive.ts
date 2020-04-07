@@ -88,7 +88,7 @@ export class NcmxgDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.gdata = this.gdata || [];
-    this.gwidth = this.gwidth || 120;
+    this.gwidth = this.gwidth*100 || 12000;
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
