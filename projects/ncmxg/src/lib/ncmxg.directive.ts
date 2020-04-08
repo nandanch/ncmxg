@@ -115,8 +115,12 @@ export class NcmxgDirective implements AfterViewInit {
       var parent = this.graph.getDefaultParent();
 
       var highlight = new mxCellTracker(this.graph, '#3a83ff', function(_mxcell){
-        if(!_mxcell.state.cell.vertex)
-            return _mxcell.state.cell;
+        try{
+          if(!_mxcell.state.cell.vertex)
+          return _mxcell.state.cell;
+        } catch (e) {
+
+        }
       });
 
       try {
@@ -314,18 +318,8 @@ export class NcmxgDirective implements AfterViewInit {
     try {
       for (let per of Object.keys(layers)) {
         for (let layer of layers[per]) {
-          if (layer.parent.children.length > 1) {
-            if (layer.children.length < 2) {
-              let currentGeometry = layer.getGeometry();
-              graph.translateCell(layer, 0, -currentGeometry.y + 80)
-            } else {
-              let currentGeometry = layer.getGeometry();
-              graph.translateCell(layer, 0, -currentGeometry.y + 70)
-            }
-          } else {
-            let currentGeometry = layer.getGeometry();
-            graph.translateCell(layer, 0, -currentGeometry.y + 70)
-          }
+          let currentGeometry = layer.getGeometry();
+          graph.translateCell(layer, 0, -currentGeometry.y + 70);
         }
       }
     } finally {
