@@ -261,7 +261,7 @@ export class NcmxgDirective implements AfterViewInit {
 
       if (visitedPerspective == Object.keys(layers).indexOf(node.parentId)) {
         if (layers[node.parentId].length > 1) {
-          layerX += layers[node.parentId][layers[node.parentId].length - 2].getGeometry().width + 50;
+          layerX += layers[node.parentId][layers[node.parentId].length - 2].getGeometry().width + 100;
         } else {
           layerX = 0;
         }
