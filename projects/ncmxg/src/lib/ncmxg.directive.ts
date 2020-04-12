@@ -33,6 +33,7 @@ export class NcmxgDirective implements AfterViewInit {
   private root: any;
   private model: any;
   private colorTabMap:any = {};
+  allLayers: {};
 
   constructor(private elRef: ElementRef, private zone: NgZone) {
     this.element = elRef.nativeElement;
@@ -48,7 +49,7 @@ export class NcmxgDirective implements AfterViewInit {
     this.zone.run(() => this.callMenuItem(value));
   }
 
-  callMenuItem(value: any) {
+  callMenuItem(value: string) {
     var _rect = this.getOffset(value);
     this.onNodeMenuClicked.emit({ "id": value, "x": _rect.left, "y": _rect.top });
   }
@@ -63,8 +64,6 @@ export class NcmxgDirective implements AfterViewInit {
     let left = parentElem.getScreenCTM().e;
     if(el.classList.contains("ncmxg-perspective")){
       left += 20;
-    } else {
-      left += 60;
     }
     
     return {
@@ -144,7 +143,7 @@ export class NcmxgDirective implements AfterViewInit {
   private addColorTabs() {
     for (let colorKey in this.colorTabMap) {
       let pNode = this.graph.model.getCell(colorKey);
-      let colorCodeTab = this.graph.insertVertex(pNode, null, '', -10, 0, 6, 40, ';COLORTAB;foldable=0;fillColor=' + this.colorTabMap[colorKey]);
+      let colorCodeTab = this.graph.insertVertex(pNode, null, '', -10, 0, 6, 60, ';COLORTAB;foldable=0;fillColor=' + this.colorTabMap[colorKey]);
       colorCodeTab.geometry.offset = new mxPoint(-180, -40);
     }
   }
@@ -220,7 +219,7 @@ export class NcmxgDirective implements AfterViewInit {
     }
     /** Add swimlanes */
     let laneGap = 0;
-    let minLaneGap = 100;
+    let minLaneGap = 180;
 
     graph.getModel().beginUpdate();
     try {
@@ -244,7 +243,7 @@ export class NcmxgDirective implements AfterViewInit {
     compactTreelayout.useBoundingBox = false;
     compactTreelayout.edgeRouting = false;
     compactTreelayout.levelDistance = 30;
-    compactTreelayout.nodeDistance = 10;
+    compactTreelayout.nodeDistance = 50;
     compactTreelayout.resizeParent = true;
     compactTreelayout.moveParent = false;
     compactTreelayout.invert = true;
@@ -280,30 +279,23 @@ export class NcmxgDirective implements AfterViewInit {
 
       let insertedNode = null;
       try {
-        insertedNode = graph.insertVertex(currentLayer, node.id, node.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;foldable=0;');
+        insertedNode = graph.insertVertex(currentLayer, node.id, null, 0, 0, 300, 60, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
+        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="'+node.name+'">'+node.name+'</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        nameBlock.geometry.offset = new mxPoint(-281,-55);
+
+        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="'+node.description+'">'+node.description+'</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        descBlock.geometry.offset = new mxPoint(-280,-36);
+        
+        var actionsBlock = graph.insertVertex(insertedNode, null, '<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
+        actionsBlock.geometry.offset = new mxPoint(-30,-60);
         for (let icon of node.shapeTags) {
           var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
           offsetX += 14;
         }
 
-        let styleString: string = insertedNode.getStyle();
-
-        styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
-        let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + node.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + node.avgRating + '">' + node.avgRating + '</span></div>';
-        let labelString = '<p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + node.name + '">' + node.name + '&nbsp;<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
-        let finalString = "";
         this.colorTabMap[node.id] = node.color;
-        if (node.avgRating) {
-          finalString = bubbleString + labelString;
-        } else {
-          finalString = labelString;
-        }
-
-        insertedNode.setValue(finalString);
-
-        graph.model.setStyle(insertedNode, styleString);
-
+       
         if (node.children.length > 0) {
           this.addChildNodes(graph, currentLayer, insertedNode, node.children)
         }
@@ -324,13 +316,14 @@ export class NcmxgDirective implements AfterViewInit {
       }
     } finally {
       graph.getModel().endUpdate();
+      this.allLayers = layers;
     }
   }
 
   private addChildNodes(graph: any, currentLayer: any, nodeParent: any, children: Array<any>) {
     let offsetX = 0;
     for (let child of children) {
-      let currentInserted = graph.insertVertex(currentLayer, child.id, child.name, 0, 0, 180, 40, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
+      let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, 300, 60, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
       graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
@@ -339,22 +332,15 @@ export class NcmxgDirective implements AfterViewInit {
         offsetX += 14;
       }
 
-      let styleString: string = currentInserted.getStyle();
+      var nameBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="' + child.name + '">' + child.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+      nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-      styleString = styleString.concat(';' + mxConstants.STYLE_FONTSTYLE + '=' + mxConstants.FONT_BOLD);
-      let bubbleString = '<div style="position:fixed;top:-45px;right:-100px;"><span style="background-color:' + child.color + ';color:#fff;border-radius:50%;padding:4px;font-weight:bold;font-size:8px;" title="' + child.avgRating + '">' + child.avgRating + '</span></div>';
-      let labelString = '<p style="max-width:130px;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position: fixed;top: -8px;left:-75px;" title="' + child.name + '">' + child.name + '&nbsp;<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;position:fixed;right:-80px;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span></p>';
-      let finalString = "";
+      var descBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="' + child.description + '">' + child.description + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+      descBlock.geometry.offset = new mxPoint(-280, -36);
+
+      var actionsBlock = graph.insertVertex(currentInserted, null, '<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
+      actionsBlock.geometry.offset = new mxPoint(-30, -60);
       this.colorTabMap[child.id] = child.color;
-      if (child.avgRating) {
-        finalString = bubbleString + labelString;
-      } else {
-        finalString = labelString;
-      }
-
-      currentInserted.setValue(finalString);
-
-      graph.model.setStyle(currentInserted, styleString);
 
       if (child.children.length > 0) {
         this.addChildNodes(graph, currentLayer, currentInserted, child.children);

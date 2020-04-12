@@ -56,168 +56,189 @@ export class AppComponent {
 	  }
 
 	  public graphData = [{
-        "id": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-        "name": "p1",
-        "color": "#000",
-        "levelNumber": 1,
-        "children": [{
-                "id": "39C9A0F152C82C6947E510B951D32E294C531DA26C7FA55D",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                "name": "t1",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": [{
-                        "id": "39C9A0F152C82C6947E510B951D32E296374A51A1005DE7E",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                        "name": "o1",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }
-                ]
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E29305628EB9837C3A6",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                "name": "this is a very long name test for the first level of strategy map nodes",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": []
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E29727E6B331F5A09C5",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                "name": "t3",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": [{
-                        "id": "39C9A0F152C82C6947E510B951D32E2901A7F80231A4495F",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                        "name": "o2",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }
-                ]
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E29E61D6A01347E3FB7",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                "name": "t4",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": []
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E2968E0CE7537008831",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2980D775EE6CF4D27B",
-                "name": "t5",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": []
-            }
-        ],
-        "connections": [{
-                "from": "39C9A0F152C82C6947E510B951D32E294C531DA26C7FA55D",
-                "to": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796"
-            }, {
-                "from": "39C9A0F152C82C6947E510B951D32E29E61D6A01347E3FB7",
-                "to": "39C9A0F152C82C6947E510B951D32E29A61BD2CA344CEA3B"
-            }
-        ]
-    }, {
-        "id": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-        "name": "p2",
-        "color": "#000",
-        "levelNumber": 1,
-        "children": [{
-                "id": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
-                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                "name": "pt1",
-                "color": "#e62437",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": [{
-                        "id": "39C9A0F152C82C6947E510B951D32E29DA8979A4EF179404",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                        "name": "po1",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }, {
-                        "id": "39C9A0F152C82C6947E510B951D32E29EB7227F3A0224518",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                        "name": "po2",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }, {
-                        "id": "39C9A0F152C82C6947E510B951D32E2918778B0C04A2EF32",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                        "name": "po4",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }, {
-                        "id": "39C9A0F152C82C6947E510B951D32E2943638987AF1E7601",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                        "name": "po5",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }
-                ]
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E29CCB56BE636216800",
-                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                "name": "pt2",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": []
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E29A61BD2CA344CEA3B",
-                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                "name": "pt3",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": [{
-                        "id": "39C9A0F152C82C6947E510B951D32E29AE8DAD1BC2BA678B",
-                        "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                        "name": "po3",
-                        "color": "#000",
-                        "levelNumber": 3,
-                        "shapeTags": [],
-                        "children": []
-                    }
-                ]
-            }, {
-                "id": "39C9A0F152C82C6947E510B951D32E2901445C966072A881",
-                "parentId": "39C9A0F152C82C6947E510B951D32E29EC5BCA021A25A95A",
-                "name": "pt4",
-                "color": "#000",
-                "levelNumber": 2,
-                "shapeTags": [],
-                "children": []
-            }
-        ],
-        "connections": [{
-                "from": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
-                "to": "39C9A0F152C82C6947E510B951D32E29727E6B331F5A09C5"
-            }, {
-                "from": "39C9A0F152C82C6947E510B951D32E29C4E3C897DE4DC796",
-                "to": "39C9A0F152C82C6947E510B951D32E29305628EB9837C3A6"
-            }
-        ]
-    }
+		"id": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
+		"name": "Finance",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E29E3E411BAE5459447",
+				"parentId": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
+				"name": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+				"description": "description",
+				"color": "#2e9833",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E29595A5FAA8593D035",
+				"parentId": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
+				"name": "Reduce Expenses",
+				"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+				"color": "#2821be",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}
+		],
+		"connections": []
+	}, {
+		"id": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
+		"name": "Customers",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
+				"name": "Existing",
+				"description": "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E29F00B57D6215B8C63",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
+				"name": "New",
+				"description": "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}
+		],
+		"connections": [{
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E29E3E411BAE5459447"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E29595A5FAA8593D035"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E29FD779640E35BA7B7"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E295E392F77086A9F26"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E29C047CA1CA907BC67"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C",
+				"to": "39C9A0F152C82C6947E510B951D32E298E39A25B7441F877"
+			}
+		]
+	}, {
+		"id": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
+		"name": "1",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E29FD779640E35BA7B7",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
+				"name": "s",
+				"description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E295E392F77086A9F26",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
+				"name": "a",
+				"description": "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": [{
+						"id": "39C9A0F152C82C6947E510B951D32E29B8FBC38C5F11C333",
+						"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
+						"name": "p",
+						"description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.",
+						"color": "#000",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}, {
+						"id": "39C9A0F152C82C6947E510B951D32E2927EBA28F387B2670",
+						"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
+						"name": "l",
+						"description": "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
+						"color": "#000",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}
+				]
+			}
+		],
+		"connections": []
+	}, {
+		"id": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
+		"name": "2",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E29C047CA1CA907BC67",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
+				"name": "q",
+				"description": "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
+				"name": "e",
+				"description": "This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E298E39A25B7441F877",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
+				"name": "k",
+				"description": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+				"color": "#000",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": [{
+						"id": "39C9A0F152C82C6947E510B951D32E29D5E3CD3591F3D6B3",
+						"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
+						"name": "h",
+						"description": "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.",
+						"color": "#000",
+						"levelNumber": 3,
+						"shapeTags": [],
+						"children": []
+					}
+				]
+			}
+		],
+		"connections": [{
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E29595A5FAA8593D035"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E29E3E411BAE5459447"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E290AED916C41D1CF5C"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E29F00B57D6215B8C63"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E29FD779640E35BA7B7"
+			}, {
+				"from": "39C9A0F152C82C6947E510B951D32E296BB1260FC9E67AF9",
+				"to": "39C9A0F152C82C6947E510B951D32E295E392F77086A9F26"
+			}
+		]
+	}
 ];
 
 	  ngOnInit(){
