@@ -100,6 +100,7 @@ export class NcmxgDirective implements AfterViewInit {
       this.root = new mxCell();
       this.model = new mxGraphModel(this.root);
       this.graph = new mxGraph(this.element, this.model);
+      this.graph.graphHandler.scaleGrid = true;
       //this.graph = new mxGraph(this.element);
 
       this.graph.setCellsMovable(true);
@@ -136,6 +137,7 @@ export class NcmxgDirective implements AfterViewInit {
       } finally {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
+        this.graph.getView().setScale(0.9);
       }
     }
   }
@@ -158,7 +160,7 @@ export class NcmxgDirective implements AfterViewInit {
     style[mxConstants.STYLE_FONTSIZE] = 14;
     style[mxConstants.STYLE_FONTSTYLE] = mxConstants.FONT_BOLD;
     //Swimlane title height
-    style[mxConstants.STYLE_STARTSIZE] = 60;
+    style[mxConstants.STYLE_STARTSIZE] = 80;
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_FONTCOLOR] = '#757575';
     style[mxConstants.STYLE_STROKECOLOR] = 'none';
@@ -230,6 +232,7 @@ export class NcmxgDirective implements AfterViewInit {
         lane.setConnectable(false);
         //use foldable=0 to hide the expander icon in swimlane title
         lane.setStyle(lane.getStyle().concat('swimlaneFillColor=#eee;foldable=0;resizable=1'));
+        graph.translateCell(lane, 0, -35);
       }
     } finally {
       graph.getModel().endUpdate();
@@ -307,9 +310,9 @@ export class NcmxgDirective implements AfterViewInit {
       compactTreelayout.execute(currentLayer);
       /**
        * Finally adjust height to mid of the swimlane for each layer
-       * where 30 is half of swimlane title height (mxConstants.STYLE_STARTSIZE)
+       * where 40 is half of swimlane title height (mxConstants.STYLE_STARTSIZE)
        * */
-      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height)/2 - 30; 
+      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height)/2 - 40; 
       graph.translateCell(currentLayer, 0, yMid)
     }
 
