@@ -272,9 +272,10 @@ export class NcmxgDirective implements AfterViewInit {
         layerX = 0;
         visitedPerspective = Object.keys(layers).indexOf(node.parentId);
       }
-
+      //Adjust initial x position for each layer
+      let xDelta = layerX + 30;
       let currentLayer = layers[node.parentId][layers[node.parentId].length - 1];
-      currentLayer.setGeometry(new mxGeometry(layerX + 30, 20, 0, 0));
+      currentLayer.setGeometry(new mxGeometry(xDelta, 0, 0, 0));
       graph.getModel().beginUpdate();
 
       let insertedNode = null;
@@ -304,20 +305,15 @@ export class NcmxgDirective implements AfterViewInit {
         graph.getModel().endUpdate();
       }
       compactTreelayout.execute(currentLayer);
+      /**
+       * Finally adjust height to mid of the swimlane for each layer
+       * where 30 is half of swimlane title height (mxConstants.STYLE_STARTSIZE)
+       * */
+      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height)/2 - 30; 
+      graph.translateCell(currentLayer, 0, yMid)
     }
 
-    graph.getModel().beginUpdate();
-    try {
-      for (let per of Object.keys(layers)) {
-        for (let layer of layers[per]) {
-          let currentGeometry = layer.getGeometry();
-          graph.translateCell(layer, 0, -currentGeometry.y + 70);
-        }
-      }
-    } finally {
-      graph.getModel().endUpdate();
-      this.allLayers = layers;
-    }
+    this.allLayers = layers;
   }
 
   private addChildNodes(graph: any, currentLayer: any, nodeParent: any, children: Array<any>) {
