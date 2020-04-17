@@ -32,7 +32,14 @@ export class NcmxgDirective implements AfterViewInit {
   private elMap: {};
   private root: any;
   private model: any;
-  private colorTabMap:any = {};
+  private colorTabMap: any = {};
+  private nodeDim = {
+    w: 300,
+    h: 60
+  };
+  private swlDim = {
+    labelHt: 80
+  };
   allLayers: {};
 
   constructor(private elRef: ElementRef, private zone: NgZone) {
@@ -56,16 +63,16 @@ export class NcmxgDirective implements AfterViewInit {
 
   getOffset(elId) {
     var el = document.getElementById(elId);
-    let parentElem:any = el.parentElement;
+    let parentElem: any = el.parentElement;
     while (!parentElem.matches("foreignObject")) {
       parentElem = parentElem.parentElement;
     }
 
     let left = parentElem.getScreenCTM().e;
-    if(el.classList.contains("ncmxg-perspective")){
+    if (el.classList.contains("ncmxg-perspective")) {
       left += 20;
     }
-    
+
     return {
       left: left,
       top: parentElem.getScreenCTM().f
@@ -87,7 +94,7 @@ export class NcmxgDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.gdata = this.gdata || [];
-    this.gwidth = this.gwidth*100 || 12000;
+    this.gwidth = this.gwidth * 100 || 12000;
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
@@ -114,10 +121,10 @@ export class NcmxgDirective implements AfterViewInit {
 
       var parent = this.graph.getDefaultParent();
 
-      var highlight = new mxCellTracker(this.graph, '#3a83ff', function(_mxcell){
-        try{
-          if(!_mxcell.state.cell.vertex)
-          return _mxcell.state.cell;
+      var highlight = new mxCellTracker(this.graph, '#3a83ff', function (_mxcell) {
+        try {
+          if (!_mxcell.state.cell.vertex)
+            return _mxcell.state.cell;
         } catch (e) {
 
         }
@@ -133,11 +140,11 @@ export class NcmxgDirective implements AfterViewInit {
         this.makeNodeConnections(this.graph, parent);
 
         this.addColorTabs();
-        
+
       } finally {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
-        this.graph.getView().setScale(0.9);
+        this.graph.getView().setScale(0.8);
       }
     }
   }
@@ -160,7 +167,7 @@ export class NcmxgDirective implements AfterViewInit {
     style[mxConstants.STYLE_FONTSIZE] = 14;
     style[mxConstants.STYLE_FONTSTYLE] = mxConstants.FONT_BOLD;
     //Swimlane title height
-    style[mxConstants.STYLE_STARTSIZE] = 80;
+    style[mxConstants.STYLE_STARTSIZE] = this.swlDim.labelHt;
     style[mxConstants.STYLE_HORIZONTAL] = false;
     style[mxConstants.STYLE_FONTCOLOR] = '#757575';
     style[mxConstants.STYLE_STROKECOLOR] = 'none';
@@ -183,7 +190,7 @@ export class NcmxgDirective implements AfterViewInit {
     style1[mxConstants.STYLE_DASHED] = 0;
     style1[mxConstants.STYLE_FOLDABLE] = 0;
     graph.getStylesheet().putCellStyle('ROUNDED', style1);
-    
+
     var style2 = mxUtils.clone(style1);
     //style2[mxConstants.STYLE_ROUNDED] = 1;
     style2[mxConstants.STYLE_STROKEWIDTH] = 0;
@@ -194,7 +201,7 @@ export class NcmxgDirective implements AfterViewInit {
     styleEdge1['edgeStyle'] = 'topToBottomEdgeStyle';
     graph.getStylesheet().putCellStyle('TBEdge', styleEdge1);
     var styleEdge2 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
-    styleEdge2['edgeStyle'] = mxEdgeStyle.EntityRelation;
+    //styleEdge2['edgeStyle'] = mxEdgeStyle.SegmentConnector;
     graph.getStylesheet().putCellStyle('LinkEdge', styleEdge2);
     //graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'topToBottomEdgeStyle';//mxEdgeStyle.ElbowConnector;//'topToBottomEdgeStyle';
   }
@@ -283,15 +290,15 @@ export class NcmxgDirective implements AfterViewInit {
 
       let insertedNode = null;
       try {
-        insertedNode = graph.insertVertex(currentLayer, node.id, null, 0, 0, 300, 60, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
-        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="'+node.name+'">'+node.name+'</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
-        nameBlock.geometry.offset = new mxPoint(-281,-55);
+        insertedNode = graph.insertVertex(currentLayer, node.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
+        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="' + node.name + '">' + node.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="'+node.description+'">'+node.description+'</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
-        descBlock.geometry.offset = new mxPoint(-280,-36);
-        
+        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="' + node.description + '">' + node.description + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        descBlock.geometry.offset = new mxPoint(-280, -36);
+
         var actionsBlock = graph.insertVertex(insertedNode, null, '<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
-        actionsBlock.geometry.offset = new mxPoint(-30,-60);
+        actionsBlock.geometry.offset = new mxPoint(-30, -60);
         for (let icon of node.shapeTags) {
           var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
@@ -299,7 +306,7 @@ export class NcmxgDirective implements AfterViewInit {
         }
 
         this.colorTabMap[node.id] = node.color;
-       
+
         if (node.children.length > 0) {
           this.addChildNodes(graph, currentLayer, insertedNode, node.children)
         }
@@ -312,7 +319,7 @@ export class NcmxgDirective implements AfterViewInit {
        * Finally adjust height to mid of the swimlane for each layer
        * where 40 is half of swimlane title height (mxConstants.STYLE_STARTSIZE)
        * */
-      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height)/2 - 40; 
+      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height) / 2 - (this.swlDim.labelHt / 2);
       graph.translateCell(currentLayer, 0, yMid)
     }
 
@@ -322,7 +329,7 @@ export class NcmxgDirective implements AfterViewInit {
   private addChildNodes(graph: any, currentLayer: any, nodeParent: any, children: Array<any>) {
     let offsetX = 0;
     for (let child of children) {
-      let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, 300, 60, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
+      let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
       graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
@@ -348,13 +355,91 @@ export class NcmxgDirective implements AfterViewInit {
   }
 
   private makeNodeConnections(graph: any, parent: any) {
+    let coordinateMap:Map<string, any> = this.mapAbsoluteNodeCoordinates();
     this.gdata.forEach(perspective => {
       perspective.connections.forEach(item => {
+        /**
+         * To avoid edge duplication
+         * connections are listed in
+         * perspective containing <from> nodes
+         */
         let fromNode = graph.model.getCell(item.from);
         let toNode = graph.model.getCell(item.to);
-        graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
+
+        let ed = graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
+        let ctrlPts = [];
+        let srcAbsCrd = coordinateMap.get(ed.source.id);
+        let tgtAbsCrd = coordinateMap.get(ed.target.id);
+
+        /** ____
+         * |a   |
+         * |   b|
+         * |____|
+         */
+        if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys < tgtAbsCrd.ys) {
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ye + 30 ));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, srcAbsCrd.ye + 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, tgtAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ys - 30 ));
+        }
+        /** ____
+         * |   b|
+         * |a   |
+         * |____|
+         */
+         else if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, srcAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, tgtAbsCrd.ye + 30));
+          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ye + 30));
+        } 
+        /** ___
+         * |   a|
+         * |b   |
+         * |____|
+         */
+        else if (srcAbsCrd.xs > tgtAbsCrd.xs && srcAbsCrd.ys < tgtAbsCrd.ys) {
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ye + 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, srcAbsCrd.ye + 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, tgtAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ys - 30));
+        } 
+        /** ____
+         * |b   |
+         * |   a|
+         * |____|
+         */
+        else if (srcAbsCrd.xs > tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, srcAbsCrd.ys - 30));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, tgtAbsCrd.ye + 30));
+          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ye + 30));
+        }
+
+        ed.geometry.points = ctrlPts;
       });
     });
+  }
+
+  mapAbsoluteNodeCoordinates() {
+    let coordinateMap = new Map();
+    for (let pId in this.allLayers) {
+      for (let node of this.allLayers[pId]) {
+        for (let childNode of node.children) {
+          if (!childNode.edge) {
+            let w = node.geometry.width;
+            let h = node.geometry.height;
+            let xs = node.geometry.x + node.parent.geometry.x;
+            let ys = node.geometry.y + node.parent.geometry.y
+            let xe = node.geometry.x + node.parent.geometry.x + w;
+            let ye = node.geometry.y + node.parent.geometry.y + h;
+            coordinateMap.set(childNode.id, { xs: xs, xe: xe, ys: ys, ye: ye, width: w, height: h})
+          }
+        }
+      }
+    }
+
+    return coordinateMap;
   }
 
   ngOnDestroy() {
