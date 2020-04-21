@@ -1,5 +1,6 @@
 import { Directive, AfterViewInit, Input, ElementRef, Output, EventEmitter, NgZone } from '@angular/core';
 import { mxRecursiveParallelEdgeLayout } from './extensions/mxRecursiveParallelEdgeLayout';
+import { v } from '@angular/core/src/render3';
 
 declare var mxGraph: any;
 declare var mxClient: any;
@@ -246,6 +247,8 @@ export class NcmxgDirective implements AfterViewInit {
     }
   }
 
+  private allNodes = [];
+
   private addNodes(graph: any) {
     let layers = {};
 
@@ -306,7 +309,7 @@ export class NcmxgDirective implements AfterViewInit {
         }
 
         this.colorTabMap[node.id] = node.color;
-
+        this.allNodes.push(insertedNode);
         if (node.children.length > 0) {
           this.addChildNodes(graph, currentLayer, insertedNode, node.children)
         }
@@ -329,7 +332,7 @@ export class NcmxgDirective implements AfterViewInit {
   private addChildNodes(graph: any, currentLayer: any, nodeParent: any, children: Array<any>) {
     let offsetX = 0;
     for (let child of children) {
-      let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;whiteSpace=wrap;');
+      let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
       graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
 
       for (let icon of child.shapeTags) {
@@ -348,6 +351,8 @@ export class NcmxgDirective implements AfterViewInit {
       actionsBlock.geometry.offset = new mxPoint(-30, -60);
       this.colorTabMap[child.id] = child.color;
 
+      this.allNodes.push(currentInserted);
+
       if (child.children.length > 0) {
         this.addChildNodes(graph, currentLayer, currentInserted, child.children);
       }
@@ -355,7 +360,8 @@ export class NcmxgDirective implements AfterViewInit {
   }
 
   private makeNodeConnections(graph: any, parent: any) {
-    let coordinateMap:Map<string, any> = this.mapAbsoluteNodeCoordinates();
+    let coordinateMap = this.mapAbsoluteNodeCoordinates();
+
     this.gdata.forEach(perspective => {
       perspective.connections.forEach(item => {
         /**
@@ -368,8 +374,8 @@ export class NcmxgDirective implements AfterViewInit {
 
         let ed = graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
         let ctrlPts = [];
-        let srcAbsCrd = coordinateMap.get(ed.source.id);
-        let tgtAbsCrd = coordinateMap.get(ed.target.id);
+        let srcAbsCrd = coordinateMap[ed.source.id];
+        let tgtAbsCrd = coordinateMap[ed.target.id];
 
         /** ____
          * |a   |
@@ -377,22 +383,30 @@ export class NcmxgDirective implements AfterViewInit {
          * |____|
          */
         if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys < tgtAbsCrd.ys) {
-          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ye + 30 ));
+          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ye + 30));
           ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, srcAbsCrd.ye + 30));
           ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, tgtAbsCrd.ys - 30));
-          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ys - 30 ));
+          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ys - 30));
         }
         /** ____
          * |   b|
          * |a   |
          * |____|
          */
-         else if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
-          ctrlPts.push(new mxPoint(srcAbsCrd.xs + (srcAbsCrd.width / 2), srcAbsCrd.ys - 30));
-          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, srcAbsCrd.ys - 30));
-          ctrlPts.push(new mxPoint(srcAbsCrd.xe + 30, tgtAbsCrd.ye + 30));
-          ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ye + 30));
-        } 
+        else if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
+          let e1 = {}, e2 = {};
+          e1['x'] = srcAbsCrd.xs + (srcAbsCrd.width / 2);
+          e1['y'] = srcAbsCrd.ys - 30;
+          e2['x'] = tgtAbsCrd.xs + (tgtAbsCrd.width / 2);
+          e2['y'] = tgtAbsCrd.ye + 30;
+
+          ctrlPts.push(new mxPoint(e1['x'], e1['y']));
+
+          ctrlPts.push(...this.addPathSegments(e1, e2, coordinateMap));
+
+          ctrlPts.push(new mxPoint(e2['x'], e2['y']));
+
+        }
         /** ___
          * |   a|
          * |b   |
@@ -403,7 +417,7 @@ export class NcmxgDirective implements AfterViewInit {
           ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, srcAbsCrd.ye + 30));
           ctrlPts.push(new mxPoint(srcAbsCrd.xs - 30, tgtAbsCrd.ys - 30));
           ctrlPts.push(new mxPoint(tgtAbsCrd.xs + (tgtAbsCrd.width / 2), tgtAbsCrd.ys - 30));
-        } 
+        }
         /** ____
          * |b   |
          * |   a|
@@ -420,9 +434,243 @@ export class NcmxgDirective implements AfterViewInit {
       });
     });
   }
+  addPathSegments(e1, e2, coordinateMap): Array<any> {
+    let segments = [];
+    let seg = this.isStraightLinePossible(e1, e2, coordinateMap);
+    //if direct (may not mean straight) segment is not possible between start and end, we try different segments
+    if (!seg.possible) {
+      // console.log(seg, e1, e2);
+      if (e1.y < e2.y) { //target is below
+        if (e1.x == e2.x) { //straight below
+          if (seg.intersection.length > 1) { //multiple intersections
+            let eseg1 = {}, eseg2 = {};
+            for (let i = 0; i < seg.intersection.length - 1; i++){
+              eseg1['x'] = seg.intersection[i].points[0].x - 30;
+              eseg1['y'] = seg.intersection[i].points[0].y - this.nodeDim.h;
+              eseg2['x'] = seg.intersection[i+1].points[0].x - 30;
+              eseg2['y'] = seg.intersection[i+1].points[0].y - this.nodeDim.h;
+
+              seg = this.isStraightLinePossible(eseg1, eseg2, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg1['x'], e1.y))
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg2['x'], eseg2['y']));
+                segments.push(new mxPoint(eseg2['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(eseg2, eseg1, coordinateMap));
+              }
+            }
+          } else {
+            let eseg1 = {};
+            eseg1['x'] = seg.intersection[0].points[1].x + 30;
+            eseg1['y'] = seg.intersection[0].points[0].y - this.nodeDim.h;
+
+            seg = this.isStraightLinePossible(e1, eseg1, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg1['x'], e1.y));
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg1['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(e1, eseg1, coordinateMap));
+              }
+          }
+        } else if (e1.x < e2.x) { //to right
+
+        } else if (e1.x > e2.x) { //to left
+
+        }
+      } else if (e1.y > e2.y) { //target is above
+        if (e1.x == e2.x) { //straight above
+          if (seg.intersection.length > 1) { //multiple intersections
+            let eseg1 = {}, eseg2 = {};
+            for (let i = 0; i < seg.intersection.length - 1; i++){
+              eseg1['x'] = seg.intersection[i].points[1].x + 30;
+              eseg1['y'] = seg.intersection[i].points[0].y - this.nodeDim.h;
+              eseg2['x'] = seg.intersection[i+1].points[1].x + 30;
+              eseg2['y'] = seg.intersection[i+1].points[0].y - this.nodeDim.h;
+
+              seg = this.isStraightLinePossible(eseg1, eseg2, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg2['x'], e1.y))
+                segments.push(new mxPoint(eseg2['x'], eseg2['y']));
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg1['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(eseg1, eseg2, coordinateMap));
+              }
+            }
+          } else {
+            let eseg1 = {}, eseg2 = {};
+            eseg1['x'] = seg.intersection[0].points[1].x + 30;
+            eseg1['y'] = seg.intersection[0].points[0].y - this.nodeDim.h;
+            eseg2['x'] = seg.intersection[0].points[1].x + 30;
+            eseg2['y'] = e1.y;
+
+            seg = this.isStraightLinePossible(eseg2, eseg1, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg2['x'], eseg2['y']));
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg1['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(e1, eseg1, coordinateMap));
+              }
+          }
+        } else if (e1.x < e2.x) { //to right
+          if (seg.intersection.length > 1){
+            let eseg1 = {}, eseg2 = {};
+            for (let i = 0; i < seg.intersection.length - 1; i++){
+              eseg1['x'] = seg.intersection[i].points[0].x - 30;
+              eseg1['y'] = seg.intersection[i].points[0].y - this.nodeDim.h;
+              eseg2['x'] = seg.intersection[i+1].points[0].x - 30;
+              eseg2['y'] = seg.intersection[i+1].points[0].y - this.nodeDim.h;
+
+              seg = this.isStraightLinePossible(eseg1, eseg2, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg2['x'], e1.y))
+                segments.push(new mxPoint(eseg2['x'], eseg2['y']));
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg1['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(eseg1, eseg2, coordinateMap));
+              }
+            }
+          } else {
+            let eseg1 = {}, eseg2 = {};
+            eseg1['x'] = seg.intersection[0].points[0].x - 30;
+            eseg1['y'] = e1.y;
+            eseg2['x'] = seg.intersection[0].points[0].x - 30;
+            eseg2['y'] = e2.y > (seg.intersection[0].points[0].y - this.nodeDim.h) ? e2.y : (seg.intersection[0].points[0].y - this.nodeDim.h);
+
+            seg = this.isStraightLinePossible(eseg1, eseg2, coordinateMap);
+              if (seg.possible){
+                segments.push(new mxPoint(eseg1['x'], eseg1['y']));
+                segments.push(new mxPoint(eseg2['x'], eseg2['y']));
+                segments.push(new mxPoint(eseg2['x'], e2.y));
+              } else {
+                segments.push(...this.addPathSegments(e1, eseg2, coordinateMap));
+              }
+          }
+        } else if (e1.x > e2.x) { //to left
+
+        }
+      }
+    }
+    return segments;
+  }
+
+  isStraightLinePossible(e1, e2, coordinateMap) {
+    /**
+     * Test for straight edges
+     * starting and ending points 
+     */
+
+    let returnObj = {
+      possible: true,
+      intersection: []
+    }
+
+    //check against all node boundaries
+    for (let nd in coordinateMap) {
+      let t1 = {}, t2 = {}, b1 = {}, b2 = {}, l1 = {}, l2 = {}, r1 = {}, r2 = {};
+      //top line segments
+      t1['x'] = coordinateMap[nd].xs,
+        t1['y'] = coordinateMap[nd].ys,
+        t2['x'] = coordinateMap[nd].xe,
+        t2['y'] = coordinateMap[nd].ys,
+        //bottom line segments
+        b1['x'] = coordinateMap[nd].xs,
+        b1['y'] = coordinateMap[nd].ye,
+        b2['x'] = coordinateMap[nd].xe,
+        b2['y'] = coordinateMap[nd].ye,
+        //left line segments
+        l1['x'] = coordinateMap[nd].xs,
+        l1['y'] = coordinateMap[nd].ys,
+        l2['x'] = coordinateMap[nd].xs,
+        l2['y'] = coordinateMap[nd].ye,
+        //right line segments
+        r1['x'] = coordinateMap[nd].xe,
+        r1['y'] = coordinateMap[nd].ys,
+        r2['x'] = coordinateMap[nd].xe,
+        r2['y'] = coordinateMap[nd].ye;
+
+      if (this.closed_segment_intersect(e1, e2, t1, t2)) {
+        returnObj.possible = false;
+        returnObj.intersection.push({'vertex' : nd, 'points' : [t1, t2]});
+      } else if (this.closed_segment_intersect(e1, e2, b1, b2)) {
+        returnObj.possible = false;
+        returnObj.intersection.push({'vertex' : nd, 'points' : [b1, b2]});
+      } else if (this.closed_segment_intersect(e1, e2, l1, l2)) {
+        returnObj.possible = false;
+        returnObj.intersection.push({'vertex' : nd, 'points' : [l1, l2]});
+      } else if (this.closed_segment_intersect(e1, e2, r1, r2)) {
+        returnObj.possible = false;
+        returnObj.intersection.push({'vertex' : nd, 'points' : [r1, r2]});
+      }
+    }
+    return returnObj;
+  }
+
+  side(a, b, c) {
+    /** 
+     * Returns a position of the point c relative to the line going through a and b
+     * Points a, b are expected to be different
+    */
+    let d = (c.y - a.y) * (b.x - a.x) - (b.y - a.y) * (c.x - a.x)
+    return d > 0 ? 1 : (d < 0 ? -1 : 0);
+  }
+
+  is_point_in_closed_segment(a, b, c) {
+    /** Returns True if c is inside closed segment, False otherwise.
+     * a, b, c are expected to be collinear
+    */
+    if (a.x < b.x)
+      return a.x <= c.x && c.x <= b.x
+    if (b.x < a.x)
+      return b.x <= c.x && c.x <= a.x
+
+    if (a.y < b.y)
+      return a.y <= c.y && c.y <= b.y
+    if (b.y < a.y)
+      return b.y <= c.y && c.y <= a.y
+
+    return a.x == c.x && a.y == c.y
+  }
+
+  closed_segment_intersect(a, b, c, d) {
+    /** Verifies if closed segments a, b, c, d do intersect.
+    */
+    if (a == b)
+      return a == c || a == d
+    if (c == d)
+      return c == a || c == b
+
+    let s1 = this.side(a, b, c),
+      s2 = this.side(a, b, d);
+
+    // All points are collinear
+    if (s1 == 0 && s2 == 0) {
+      return this.is_point_in_closed_segment(a, b, c) ||
+        this.is_point_in_closed_segment(a, b, d) ||
+        this.is_point_in_closed_segment(c, d, a) ||
+        this.is_point_in_closed_segment(c, d, b);
+    }
+
+    // No touching and on the same side
+    if (s1 && s1 == s2)
+      return false
+
+    s1 = this.side(c, d, a)
+    s2 = this.side(c, d, b)
+
+    // No touching and on the same side
+    if (s1 && s1 == s2)
+      return false
+
+    return true
+  }
 
   mapAbsoluteNodeCoordinates() {
-    let coordinateMap = new Map();
+    let coordinateMap = {};
     for (let pId in this.allLayers) {
       for (let node of this.allLayers[pId]) {
         for (let childNode of node.children) {
@@ -433,10 +681,19 @@ export class NcmxgDirective implements AfterViewInit {
             let ys = node.geometry.y + node.parent.geometry.y
             let xe = node.geometry.x + node.parent.geometry.x + w;
             let ye = node.geometry.y + node.parent.geometry.y + h;
-            coordinateMap.set(childNode.id, { xs: xs, xe: xe, ys: ys, ye: ye, width: w, height: h})
+            coordinateMap[childNode.id] = { xs: xs, xe: xe, ys: ys, ye: ye, width: w, height: h };
           }
         }
       }
+    }
+
+    for (let nodeObj of this.allNodes) {
+      coordinateMap[nodeObj.id].xs = coordinateMap[nodeObj.id].xs + nodeObj.geometry.x;
+      coordinateMap[nodeObj.id].xe = coordinateMap[nodeObj.id].xs + nodeObj.geometry.width;
+      coordinateMap[nodeObj.id].ys = coordinateMap[nodeObj.id].ys + nodeObj.geometry.y;
+      coordinateMap[nodeObj.id].ye = coordinateMap[nodeObj.id].ys + nodeObj.geometry.height;
+      coordinateMap[nodeObj.id].width = nodeObj.geometry.width;
+      coordinateMap[nodeObj.id].height = nodeObj.geometry.height;
     }
 
     return coordinateMap;
