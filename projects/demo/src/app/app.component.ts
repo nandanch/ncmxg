@@ -242,7 +242,7 @@ export class AppComponent {
 						"id": "v15",
 						"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
 						"name": "v15",
-						"description": "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.",
+						"description": null,
 						"color": "#000",
 						"levelNumber": 3,
 						"shapeTags": [],
