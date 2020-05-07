@@ -379,13 +379,14 @@ export class NcmxgDirective implements AfterViewInit {
         let srcAbsCrd = coordinateMap[ed.source.id];
         let tgtAbsCrd = coordinateMap[ed.target.id];
 
+        let e1 = {}, e2 = {}, estart = {};
+
         /** ____
          * |a   |
          * |   b|
          * |____|
          */
         if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys < tgtAbsCrd.ys) {
-          let e1 = {}, e2 = {}, estart = {};
           e1['x'] = srcAbsCrd.xs + (srcAbsCrd.width / 2);
           e1['y'] = srcAbsCrd.ye + 30;
           e2['x'] = tgtAbsCrd.xs + (tgtAbsCrd.width / 2);
@@ -406,7 +407,6 @@ export class NcmxgDirective implements AfterViewInit {
          * |____|
          */
         else if (srcAbsCrd.xs <= tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
-          let e1 = {}, e2 = {}, estart = {};
           e1['x'] = srcAbsCrd.xs + (srcAbsCrd.width / 2);
           e1['y'] = srcAbsCrd.ys - 30;
           e2['x'] = tgtAbsCrd.xs + (tgtAbsCrd.width / 2);
@@ -429,7 +429,6 @@ export class NcmxgDirective implements AfterViewInit {
          * |____|
          */
         else if (srcAbsCrd.xs > tgtAbsCrd.xs && srcAbsCrd.ys < tgtAbsCrd.ys) {
-          let e1 = {}, e2 = {}, estart = {};
           e1['x'] = srcAbsCrd.xs + (srcAbsCrd.width / 2);
           e1['y'] = srcAbsCrd.ye + 30;
           e2['x'] = tgtAbsCrd.xs + (tgtAbsCrd.width / 2);
@@ -452,7 +451,6 @@ export class NcmxgDirective implements AfterViewInit {
          * |____|
          */
         else if (srcAbsCrd.xs > tgtAbsCrd.xs && srcAbsCrd.ys > tgtAbsCrd.ys) {
-          let e1 = {}, e2 = {}, estart = {};
           e1['x'] = srcAbsCrd.xs + (srcAbsCrd.width / 2);
           e1['y'] = srcAbsCrd.ys - 30;
           e2['x'] = tgtAbsCrd.xs + (tgtAbsCrd.width / 2);
@@ -469,27 +467,26 @@ export class NcmxgDirective implements AfterViewInit {
 
           ctrlPts.push(new mxPoint(e2['x'], e2['y']));
         }
-
         ed.geometry.points = ctrlPts;
       });
     });
   }
 
   refineCtrlPts(intermediateCtrlPts: any[], coordinateMap: any) {
-    try{
-      for(let i = 0; i < intermediateCtrlPts.length; i++){
-        for(let j = intermediateCtrlPts.length - 1; j > -1; j--){
-          if(Ncmxg2DUtils.isStraightLinePossible(intermediateCtrlPts[i], intermediateCtrlPts[j], coordinateMap).possible){
-            if(j > i){
-              intermediateCtrlPts.splice(i+1, j - i - 1);
-            }
+    let maxPathLength = 0;
+    let startIndex = 0;
+
+    for(let i = 0; i < intermediateCtrlPts.length; i++){
+      for(let j = intermediateCtrlPts.length - 1; j > i; j--){
+        if(Ncmxg2DUtils.isStraightLinePossible(intermediateCtrlPts[i], intermediateCtrlPts[j], coordinateMap).possible){
+          if (j - i - 1 > maxPathLength) {
+            maxPathLength = j - i - 1;
+            startIndex = i + 1;
           }
         }
       }
-    } catch (e){
-
     }
-    
+    intermediateCtrlPts.splice(startIndex, maxPathLength);
     return intermediateCtrlPts;
   }
 
