@@ -43,6 +43,7 @@ export class NcmxgDirective implements AfterViewInit {
     labelHt: 80
   };
   allLayers: {};
+  private allCtrlPtsRef: any[] = [];
 
   constructor(private elRef: ElementRef, private zone: NgZone) {
     this.element = elRef.nativeElement;
@@ -467,9 +468,25 @@ export class NcmxgDirective implements AfterViewInit {
 
           ctrlPts.push(new mxPoint(e2['x'], e2['y']));
         }
+
+        //this.separateBendpoints(ctrlPts);
+
         ed.geometry.points = ctrlPts;
       });
     });
+  }
+
+  private separateBendpoints(ctrlPts: any[]) {
+    if (ctrlPts.length > 0) {
+      for (let i = 0; i < this.allCtrlPtsRef.length; i++) {
+        for (let j = 0; j < ctrlPts.length; j++) {
+          if (this.allCtrlPtsRef[i].x == ctrlPts[j].x && this.allCtrlPtsRef[i].y == ctrlPts[j].y) {
+            ctrlPts[j] = new mxPoint(ctrlPts[j].x + 15, ctrlPts[j].y);
+          }
+        }
+      }
+      this.allCtrlPtsRef.push(...ctrlPts);
+    }
   }
 
   refineCtrlPts(intermediateCtrlPts: any[], coordinateMap: any) {

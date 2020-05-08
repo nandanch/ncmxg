@@ -56,227 +56,134 @@ export class AppComponent {
     }
 
     public graphData = [{
-		"id": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
-		"name": "Finance",
+		"id": "39C9A0F152C82C6947E510B951D32E2997A5702BEE3C4520",
+		"name": "Financial Perspective",
 		"color": "#000",
 		"levelNumber": 1,
 		"children": [{
-				"id": "v1",
-				"parentId": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
-				"name": "v1",
-				"description": "description",
-				"color": "#2e9833",
+				"id": "39C9A0F152C82C6947E510B951D32E29FCBD0EC136833364",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2997A5702BEE3C4520",
+				"name": "Revenue Growth",
+				"description": "Focus on sustainable revenue growth",
+				"color": "#80ff80",
 				"levelNumber": 2,
 				"shapeTags": [],
 				"children": []
 			}, {
-				"id": "v2",
-				"parentId": "39C9A0F152C82C6947E510B951D32E29587A3B42EA8A798F",
-				"name": "v2",
-				"description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-				"color": "#2821be",
+				"id": "39C9A0F152C82C6947E510B951D32E29F2B014648D79DAC3",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2997A5702BEE3C4520",
+				"name": "Cost Management",
+				"description": "To execute within the agreed cost budget without compromising quality",
+				"color": "#80ff80",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E29D8AAB0C153D6814E",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2997A5702BEE3C4520",
+				"name": "Fund raising/Financing",
+				"description": "Secure funding for phase 1 of shams media city development",
+				"color": "#00ff80",
 				"levelNumber": 2,
 				"shapeTags": [],
 				"children": []
 			}
-		],
-		"connections": [{
-            "from": "v2",
-            "to": "v12"
-        }, {
-            "from": "v1",
-            "to": "v10"
-        }]
-	}, {
-		"id": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
-		"name": "Customers",
-		"color": "#000",
-		"levelNumber": 1,
-		"children": [{
-				"id": "v3",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
-				"name": "v3",
-				"description": "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": []
-			}, {
-				"id": "v4",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2957811650D176BBF5",
-				"name": "v4",
-				"description": "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": []
-			}
-		],
-		"connections": [{
-				"from": "v3",
-				"to": "v1"
-			}, {
-				"from": "v3",
-				"to": "v2"
-			}, {
-				"from": "v3",
-				"to": "v5"
-			}, {
-				"from": "v3",
-				"to": "v6"
-			}, {
-				"from": "v3",
-				"to": "v11"
-			}, {
-				"from": "v3",
-				"to": "v12"
-			}, {
-				"from": "v3",
-				"to": "v13"
-			}
-		]
-	}, {
-		"id": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-		"name": "1",
-		"color": "#000",
-		"levelNumber": 1,
-		"children": [{
-				"id": "v5",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-				"name": "s",
-				"description": "v5",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": []
-			}, {
-				"id": "v6",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-				"name": "v6",
-				"description": "Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": [{
-						"id": "v7",
-						"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-						"name": "v7",
-						"description": "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.",
-						"color": "#000",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}, {
-						"id": "v8",
-						"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-						"name": "v8",
-						"description": "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-						"color": "#000",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}, {
-						"id": "v9",
-						"parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-						"name": "v9",
-						"description": "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-						"color": "#000",
-						"levelNumber": 3,
-						"shapeTags": [],
-						"children": []
-					}
-				]
-			}, {
-                "id": "v10",
-                "parentId": "39C9A0F152C82C6947E510B951D32E2958D3AC6001221998",
-                "name": "v10",
-                "description": "Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.",
-                "color": "#000",
-                "levelNumber": 3,
-                "shapeTags": [],
-                "children": []
-            }
 		],
 		"connections": []
 	}, {
-		"id": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-		"name": "2",
+		"id": "39C9A0F152C82C6947E510B951D32E2972AACF423E2B3CBD",
+		"name": "Customer Perspective",
 		"color": "#000",
 		"levelNumber": 1,
 		"children": [{
-				"id": "v11",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-				"name": "v11",
-				"description": "Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC.",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": []
-			}, {
-				"id": "v12",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-				"name": "v12",
-				"description": "This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.",
-				"color": "#000",
-				"levelNumber": 2,
-				"shapeTags": [],
-				"children": []
-			}, {
-				"id": "v13",
-				"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-				"name": "v13",
-				"description": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
-				"color": "#000",
+				"id": "39C9A0F152C82C6947E510B951D32E298CD079C9838C4D01",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2972AACF423E2B3CBD",
+				"name": "Customer acquisition",
+				"description": "Increase the customer base",
+				"color": "#ff8080",
 				"levelNumber": 2,
 				"shapeTags": [],
 				"children": [{
-						"id": "v14",
-						"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-						"name": "v14",
-						"description": "All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.",
-						"color": "#000",
+						"id": "39C9A0F152C82C6947E510B951D32E298E13351968F1CAFE",
+						"parentId": "39C9A0F152C82C6947E510B951D32E2972AACF423E2B3CBD",
+						"name": "Media sector focus",
+						"description": "To increase media sector proportion ",
+						"color": "#ff0080",
 						"levelNumber": 3,
 						"shapeTags": [],
 						"children": []
 					}, {
-						"id": "v15",
-						"parentId": "39C9A0F152C82C6947E510B951D32E2977D8E5B0FFB48816",
-						"name": "v15",
-						"description": null,
-						"color": "#000",
+						"id": "39C9A0F152C82C6947E510B951D32E29F45B9CB607272627",
+						"parentId": "39C9A0F152C82C6947E510B951D32E2972AACF423E2B3CBD",
+						"name": "International",
+						"description": "To increase the international proportion",
+						"color": "#ff0080",
 						"levelNumber": 3,
 						"shapeTags": [],
 						"children": []
 					}
 				]
+			}, {
+				"id": "39C9A0F152C82C6947E510B951D32E296373EC66E34B7DE4",
+				"parentId": "39C9A0F152C82C6947E510B951D32E2972AACF423E2B3CBD",
+				"name": "Customer retention",
+				"description": "To maximize retention of existing customers",
+				"color": "#ff8080",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
 			}
 		],
-		"connections": [
-           /*  {
-				"from": "v12",
-				"to": "v2"
-			}, */ {
-				"from": "v12",
-				"to": "v1"
+		"connections": [{
+				"from": "39C9A0F152C82C6947E510B951D32E298CD079C9838C4D01",
+				"to": "39C9A0F152C82C6947E510B951D32E29D089FB6951B3ABFE"
+			}
+		]
+	}, {
+		"id": "39C9A0F152C82C6947E510B951D32E29B88BC3A6F3CED64F",
+		"name": "Customer Financial",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E29F08F699FB57C0A1A",
+				"parentId": "39C9A0F152C82C6947E510B951D32E29B88BC3A6F3CED64F",
+				"name": "Develop media and creative talent",
+				"description": "To impart technical knowledge & skills to expand the media talent pool",
+				"color": "#ffff00",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
 			}, {
-				"from": "v12",
-				"to": "v3"
-			}, {
-				"from": "v12",
-				"to": "v4"
-			}, {
-				"from": "v12",
-				"to": "v5"
-			}, {
-				"from": "v12",
-				"to": "v6"
-            }
-            , {
-				"from": "v14",
-				"to": "v8"
-			}, {
-				"from": "v14",
-				"to": "v9"
+				"id": "39C9A0F152C82C6947E510B951D32E292C664E0A978CD7F9",
+				"parentId": "39C9A0F152C82C6947E510B951D32E29B88BC3A6F3CED64F",
+				"name": "Customer experience",
+				"description": "To meet and exceed customer needs that leads to satisfied customers",
+				"color": "#ffff00",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}
+		],
+		"connections": []
+	}, {
+		"id": "39C9A0F152C82C6947E510B951D32E293608B300651A9FEF",
+		"name": "Brand perspective",
+		"color": "#000",
+		"levelNumber": 1,
+		"children": [{
+				"id": "39C9A0F152C82C6947E510B951D32E29D089FB6951B3ABFE",
+				"parentId": "39C9A0F152C82C6947E510B951D32E293608B300651A9FEF",
+				"name": "Brand Positioning ",
+				"description": "To establish a brand identity that attracts customers",
+				"color": "#0000ff",
+				"levelNumber": 2,
+				"shapeTags": [],
+				"children": []
+			}
+		],
+		"connections": [{
+				"from": "39C9A0F152C82C6947E510B951D32E29D089FB6951B3ABFE",
+				"to": "39C9A0F152C82C6947E510B951D32E292C664E0A978CD7F9"
 			}
 		]
 	}
