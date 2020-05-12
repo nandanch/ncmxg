@@ -203,7 +203,7 @@ export class NcmxgDirective implements AfterViewInit {
     styleEdge1['edgeStyle'] = 'topToBottomEdgeStyle';
     graph.getStylesheet().putCellStyle('TBEdge', styleEdge1);
     var styleEdge2 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
-    //styleEdge2['edgeStyle'] = mxEdgeStyle.SegmentConnector;
+    styleEdge2['edgeStyle'] = mxEdgeStyle.SegmentConnector;
     graph.getStylesheet().putCellStyle('LinkEdge', styleEdge2);
     //graph.getStylesheet().getDefaultEdgeStyle()['edgeStyle'] = 'topToBottomEdgeStyle';//mxEdgeStyle.ElbowConnector;//'topToBottomEdgeStyle';
   }
@@ -320,11 +320,14 @@ export class NcmxgDirective implements AfterViewInit {
         graph.getModel().endUpdate();
       }
       compactTreelayout.execute(currentLayer);
+
+      graph.translateCell(insertedNode, -(currentLayer.geometry.width / 2) + (this.nodeDim.w / 2) + 10, 0);
       /**
        * Finally adjust height to mid of the swimlane for each layer
        * where 40 is half of swimlane title height (mxConstants.STYLE_STARTSIZE)
        * */
-      let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height) / 2 - (this.swlDim.labelHt / 2);
+      //let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height) / 2 - (this.swlDim.labelHt / 2);
+      let yMid = (this.swlDim.labelHt / 2) - 10;
       graph.translateCell(currentLayer, 0, yMid)
     }
 
