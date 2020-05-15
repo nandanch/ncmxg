@@ -201,6 +201,8 @@ export class NcmxgDirective implements AfterViewInit {
 
     var styleEdge1 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
     styleEdge1['edgeStyle'] = 'topToBottomEdgeStyle';
+    styleEdge1['strokeColor'] = '#000';
+    styleEdge1['strokeWidth'] = 2;
     graph.getStylesheet().putCellStyle('TBEdge', styleEdge1);
     var styleEdge2 = mxUtils.clone(graph.getStylesheet().getDefaultEdgeStyle());
     styleEdge2['edgeStyle'] = mxEdgeStyle.SegmentConnector;
@@ -338,7 +340,7 @@ export class NcmxgDirective implements AfterViewInit {
     let offsetX = 0;
     for (let child of children) {
       let currentInserted = graph.insertVertex(currentLayer, child.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
-      graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge;strokeColor=#B5B5B5;strokeWidth=2');
+      graph.insertEdge(currentLayer, null, '', currentInserted, nodeParent, ';TBEdge');
 
       for (let icon of child.shapeTags) {
         var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
@@ -378,7 +380,7 @@ export class NcmxgDirective implements AfterViewInit {
         let fromNode = graph.model.getCell(item.from);
         let toNode = graph.model.getCell(item.to);
 
-        let ed = graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#8796b7;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
+        let ed = graph.insertEdge(this.root, null, null, fromNode, toNode, ';LinkEdge;strokeColor=#B5B5B5;strokeWidth=2;sourcePort=north;targetPort=north;rounded=0');
         let ctrlPts = [];
         let srcAbsCrd = coordinateMap[ed.source.id];
         let tgtAbsCrd = coordinateMap[ed.target.id];

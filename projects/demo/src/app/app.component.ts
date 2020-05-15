@@ -134,8 +134,7 @@ export class AppComponent {
 				"children": []
 			}
 		],
-		"connections": [
-			{
+		"connections": [{
 				"from": "39C9A0F152C82C6947E510B951D32E298CD079C9838C4D01",
 				"to": "39C9A0F152C82C6947E510B951D32E29D089FB6951B3ABFE"
 			}
