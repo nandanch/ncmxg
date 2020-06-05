@@ -97,7 +97,7 @@ export class NcmxgDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.gdata = this.gdata || [];
-    this.gwidth = this.gwidth * 100 || 12000;
+    this.gwidth = this.gwidth;// * 100 || 12000;
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
@@ -143,11 +143,64 @@ export class NcmxgDirective implements AfterViewInit {
 
         this.addColorTabs();
 
+        this.addSwLabels(this.graph);
+
+        this.adjustSwWidth();
+
       } finally {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
         this.graph.getView().setScale(0.8);
       }
+    }
+  }
+
+  private adjustSwWidth() {
+    let maxWidth = this.graph.model.getCell(this.elMap[0][0].id).geometry.width;
+    for (let lay in this.allLayers) {
+      let wh = 0;
+      for (let ch of this.allLayers[lay]) {
+        wh += ch.geometry.width;
+      }
+      if (wh + 300 > maxWidth) {
+        maxWidth = wh + 330;
+      }
+    }
+    for (let pObj of this.elMap[0]) {
+      let p = this.graph.model.getCell(pObj.id);
+      p.geometry.width = maxWidth;
+    }
+  }
+
+  addSwLabels(graph:any) {
+    let laneDepth = {};
+    for (let depth = 1; depth < Object.keys(this.elMap).length; depth++) {
+      for (let vertex of this.elMap[depth]) {
+        if (laneDepth[vertex.parentId] == undefined) {
+          laneDepth[vertex.parentId] = depth;
+        }
+        else {
+          laneDepth[vertex.parentId] = depth > laneDepth[vertex.parentId] ? depth : laneDepth[vertex.parentId];
+        }
+      }
+    }
+
+    if (Object.keys(laneDepth).length < this.elMap[0].length) {
+      for (let excludedVertex of this.elMap[0]) {
+        if (!laneDepth.hasOwnProperty(excludedVertex.id)) {
+          laneDepth[excludedVertex.id] = 1;
+        }
+      }
+    }
+    let laneGap = 0;
+    let minLaneGap = 180;
+
+    for (let perspective of this.elMap[0]) {
+      var nameBlock = graph.insertVertex(this.root, null, '<div style="width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;font-weight:bold;" title="' + perspective.name + '">' + perspective.name + '</div>', 1, 1, 150, 30, 'fontColor=#757575;fontSize=14;strokeOpacity=0;spacingTop=7;spacingBottom=7;align=left;verticalAlign=top;fillColor=#fff;', true);
+      var actionsBlock = graph.insertVertex(this.root, null, '<span class="noselect" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 10, 30, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
+      laneGap += laneDepth[perspective.id] * minLaneGap;
+      graph.translateCell(nameBlock, 0, laneGap - ((laneDepth[perspective.id] * minLaneGap))+2);
+      graph.translateCell(actionsBlock, nameBlock.geometry.width + 15, laneGap - ((laneDepth[perspective.id] * minLaneGap)) + 2);
     }
   }
 
@@ -238,7 +291,8 @@ export class NcmxgDirective implements AfterViewInit {
     try {
       for (let perspective of this.elMap[0]) {
         var layer = this.root.insert(new mxCell());
-        var lane = graph.insertVertex(layer, perspective.id, '<table><tr><td><span style="margin-left: -15px;"><font style="display:inline-block;max-width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;white-space:nowrap;" title="' + perspective.name + '">' + perspective.name + '</font></span></td><td><span class="noselect ncmxg-perspective" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i style="position: relative;top: -2px;right: -10px;" class="fas fa-ellipsis-h ml-2" title="Options"></i></span></td></tr></table>', 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
+        var lane = graph.insertVertex(layer, perspective.id, null, 0, laneGap, this.gwidth, 20 + (laneDepth[perspective.id] * minLaneGap), ';CSTSWLANE;horizontal=1;align=left;spacingLeft=15;spacingRight=15;');
+
         laneGap += laneDepth[perspective.id] * minLaneGap;
         lane.setConnectable(false);
         //use foldable=0 to hide the expander icon in swimlane title
