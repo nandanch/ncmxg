@@ -135,18 +135,17 @@ export class NcmxgDirective implements AfterViewInit {
       try {
         this.addSwimlanes(this.graph, parent);
         /** Add perspectives and objectives */
+        if (this.elMap[1] != undefined && this.elMap[1] != null) {
+          this.addNodes(this.graph);
 
-        this.addNodes(this.graph);
-
-        /** Add all connections */
-        this.makeNodeConnections(this.graph, parent);
-
-        this.addColorTabs();
-
+          /** Add all connections */
+          this.makeNodeConnections(this.graph, parent);
+  
+          this.addColorTabs();
+  
+          this.adjustSwWidth();
+        }
         this.addSwLabels(this.graph);
-
-        this.adjustSwWidth();
-
       } finally {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
