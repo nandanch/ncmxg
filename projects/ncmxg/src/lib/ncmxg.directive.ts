@@ -97,7 +97,7 @@ export class NcmxgDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.gdata = this.gdata || [];
-    this.gwidth = this.gwidth;// * 100 || 12000;
+    this.gwidth = this.gwidth * 100 || 12000;
 
     this.elMap = {};
     this.elMap = this.flatten(this.gdata, this.elMap, 0);
@@ -155,7 +155,7 @@ export class NcmxgDirective implements AfterViewInit {
   }
 
   private adjustSwWidth() {
-    let maxWidth = this.graph.model.getCell(this.elMap[0][0].id).geometry.width;
+    let maxWidth = 0;
     for (let lay in this.allLayers) {
       let wh = 0;
       for (let ch of this.allLayers[lay]) {
@@ -375,7 +375,7 @@ export class NcmxgDirective implements AfterViewInit {
         graph.getModel().endUpdate();
       }
       compactTreelayout.execute(currentLayer);
-
+      
       graph.translateCell(insertedNode, -(currentLayer.geometry.width / 2) + (this.nodeDim.w / 2) + 10, 0);
       /**
        * Finally adjust height to mid of the swimlane for each layer
@@ -383,7 +383,7 @@ export class NcmxgDirective implements AfterViewInit {
        * */
       //let yMid = (graph.model.getCell(node.parentId).getGeometry().height - currentLayer.getGeometry().height) / 2 - (this.swlDim.labelHt / 2);
       let yMid = (this.swlDim.labelHt / 2) - 10;
-      graph.translateCell(currentLayer, 0, yMid)
+      graph.translateCell(currentLayer, 0, yMid);
     }
 
     this.allLayers = layers;
