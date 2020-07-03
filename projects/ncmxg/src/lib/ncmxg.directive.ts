@@ -96,12 +96,6 @@ export class NcmxgDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    let jq = window['$'];
-    jq(document).ready(function() {
-      jq('.ncmx-tooltip').tooltipster({
-        contentAsHTML: true
-      });
-    });
     this.gdata = this.gdata || [];
     this.gwidth = this.gwidth * 100 || 12000;
 
@@ -146,9 +140,9 @@ export class NcmxgDirective implements AfterViewInit {
 
           /** Add all connections */
           this.makeNodeConnections(this.graph, parent);
-  
+
           this.addColorTabs();
-  
+
           this.adjustSwWidth();
         }
         this.addSwLabels(this.graph);
@@ -156,6 +150,13 @@ export class NcmxgDirective implements AfterViewInit {
         this.graph.setCellsResizable(true);
         this.graph.setEnabled(false);
         this.graph.getView().setScale(0.8);
+        let jq = window['$'];
+        console.log(jq)
+        console.log(jq('.ncmx-tooltip'));
+        jq('.ncmx-tooltip').tooltipster({
+          contentAsHTML: true
+        });
+        console.log(jq.tooltipster);
       }
     }
   }
@@ -177,7 +178,7 @@ export class NcmxgDirective implements AfterViewInit {
     }
   }
 
-  addSwLabels(graph:any) {
+  addSwLabels(graph: any) {
     let laneDepth = {};
     for (let depth = 1; depth < Object.keys(this.elMap).length; depth++) {
       for (let vertex of this.elMap[depth]) {
@@ -204,7 +205,7 @@ export class NcmxgDirective implements AfterViewInit {
       var nameBlock = graph.insertVertex(this.root, null, '<div style="width:150px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis;font-weight:bold;" title="' + perspective.name + '">' + perspective.name + '</div>', 1, 1, 150, 30, 'fontColor=#757575;fontSize=14;strokeOpacity=0;spacingTop=7;spacingBottom=7;align=left;verticalAlign=top;fillColor=#fff;', true);
       var actionsBlock = graph.insertVertex(this.root, null, '<span class="noselect" id=' + perspective.id + ' onClick="nc.mxg.menuCallback(\'' + perspective.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 10, 30, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
       laneGap += laneDepth[perspective.id] * minLaneGap;
-      graph.translateCell(nameBlock, 0, laneGap - ((laneDepth[perspective.id] * minLaneGap))+2);
+      graph.translateCell(nameBlock, 0, laneGap - ((laneDepth[perspective.id] * minLaneGap)) + 2);
       graph.translateCell(actionsBlock, nameBlock.geometry.width + 15, laneGap - ((laneDepth[perspective.id] * minLaneGap)) + 2);
     }
   }
@@ -357,11 +358,11 @@ export class NcmxgDirective implements AfterViewInit {
       try {
         let descr = node.description == null ? " " : node.description;
         insertedNode = graph.insertVertex(currentLayer, node.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
-        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>'+node.name+'</strong>\r\n'+descr+'">' + node.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>' + node.name + '</strong>\r\n' + descr + '">' + node.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
         nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-        
-        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>'+node.name+'</strong>\r\n'+descr+'">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+
+        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>' + node.name + '</strong>\r\n' + descr + '">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
         descBlock.geometry.offset = new mxPoint(-280, -36);
 
         var actionsBlock = graph.insertVertex(insertedNode, null, '<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
@@ -383,7 +384,7 @@ export class NcmxgDirective implements AfterViewInit {
         graph.getModel().endUpdate();
       }
       compactTreelayout.execute(currentLayer);
-      
+
       graph.translateCell(insertedNode, -(currentLayer.geometry.width / 2) + (this.nodeDim.w / 2) + 10, 0);
       /**
        * Finally adjust height to mid of the swimlane for each layer
@@ -411,11 +412,11 @@ export class NcmxgDirective implements AfterViewInit {
 
       let descr = child.description == null ? " " : child.description;
 
-      var nameBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>'+child.name+'</strong>\r\n'+descr+'">' + child.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+      var nameBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>' + child.name + '</strong>\r\n' + descr + '">' + child.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
       nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-      
-      var descBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>'+child.name+'</strong>\r\n'+descr+'">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+
+      var descBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>' + child.name + '</strong>\r\n' + descr + '">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
       descBlock.geometry.offset = new mxPoint(-280, -36);
 
       var actionsBlock = graph.insertVertex(currentInserted, null, '<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
@@ -561,9 +562,9 @@ export class NcmxgDirective implements AfterViewInit {
     let maxPathLength = 0;
     let startIndex = 0;
 
-    for(let i = 0; i < intermediateCtrlPts.length; i++){
-      for(let j = intermediateCtrlPts.length - 1; j > i; j--){
-        if(Ncmxg2DUtils.isStraightLinePossible(intermediateCtrlPts[i], intermediateCtrlPts[j], coordinateMap).possible){
+    for (let i = 0; i < intermediateCtrlPts.length; i++) {
+      for (let j = intermediateCtrlPts.length - 1; j > i; j--) {
+        if (Ncmxg2DUtils.isStraightLinePossible(intermediateCtrlPts[i], intermediateCtrlPts[j], coordinateMap).possible) {
           if (j - i - 1 > maxPathLength) {
             maxPathLength = j - i - 1;
             startIndex = i + 1;
