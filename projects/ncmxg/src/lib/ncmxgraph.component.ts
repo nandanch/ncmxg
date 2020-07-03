@@ -25,7 +25,7 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
   private menuXPos: number;
   public mxdata: Array<any>;
   public containerWidth: number;
-  
+
   @Input() graphData: Array<any>;
   @Output() onVertexClick: EventEmitter<any> = new EventEmitter();
 
@@ -39,10 +39,10 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
   set ncmxDirective(directive: NcmxgDirective) {
     this.nodeMenuClicked = directive.onNodeMenuClicked;
   }
-  
+
   @HostListener('scroll')
   onContainerScroll(): void {
-    if(this.childMenu.getMenuDisplayed()){
+    if (this.childMenu.getMenuDisplayed()) {
       this.hideMenu();
     }
   }
@@ -57,7 +57,7 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
       this.onVertexClick.emit(this.lastVerticeClicked);
       this.controlMenuPosition(this.lastVerticeClicked);
     } */
-    if(this.childMenu.getMenuDisplayed()){
+    if (this.childMenu.getMenuDisplayed()) {
       this.hideMenu();
     }
   }
@@ -77,13 +77,13 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
       this.onVertexClick.emit(value);
       //this.childMenu.setMenuDisplayed(true);
       //this.renderer.addClass(this.menuComponent.nativeElement.firstChild, 'menudiv');
-      this.childMenu.menuStateOpened.emit({"id": value.id,"state":true}); 
+      this.childMenu.menuStateOpened.emit({ "id": value.id, "state": true });
       this.controlMenuPosition(value);
     });
   }
 
-  hideMenu(){
-    this.childMenu.menuStateOpened.emit({"id": null,"state":false});    
+  hideMenu() {
+    this.childMenu.menuStateOpened.emit({ "id": null, "state": false });
   }
 
   controlMenuPosition(value: any) {
@@ -91,7 +91,7 @@ export class NcmxgraphComponent implements OnInit, AfterViewInit {
     this.renderer.setStyle(this.menuComponent.nativeElement.firstChild, 'top', value.y + 'px');
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.nodeMenuClicked.unsubscribe();
     this.onVertexClick.unsubscribe();
   }

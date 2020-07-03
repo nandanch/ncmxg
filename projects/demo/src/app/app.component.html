@@ -1,6 +1,6 @@
 <div style="display: flex; align-items: center;">
     <nc-mxgraph *ngIf="graphData.length > 0" [graphData]="graphData" (onVertexClick)="isCalledBack($event)"
-        style="position: relative; overflow: auto; border: 2px solid; height: 900px; width: 2000px; padding: 30px;">
+        style="position: relative; overflow: auto; border: 2px solid; height: 600px; width: 2000px; padding: 30px;">
         <nc-mxgraph-menu (itemId)="readItemType($event)">
             <div *ngIf="levelMap[selectedNode] == 1">
                 <ul class="my-dropdown">

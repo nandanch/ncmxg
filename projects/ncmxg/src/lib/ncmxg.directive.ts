@@ -349,16 +349,37 @@ export class NcmxgDirective implements AfterViewInit {
 
       let insertedNode = null;
       try {
+        let descr = node.description == null ? " " : node.description;
         insertedNode = graph.insertVertex(currentLayer, node.id, null, 0, 0, this.nodeDim.w, this.nodeDim.h, ';ROUNDED;fillColor=#fff;foldable=0;sourcePortConstraint=north;targetPortConstraint=south');
-        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="' + node.name + '">' + node.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        var nameBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>'+node.name+'</strong>\r\n'+descr+'">' + node.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
         nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-        let descr = node.description == null ? " " : node.description;
-        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="' + descr + '">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+        
+        var descBlock = graph.insertVertex(insertedNode, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>'+node.name+'</strong>\r\n'+descr+'">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
         descBlock.geometry.offset = new mxPoint(-280, -36);
 
         var actionsBlock = graph.insertVertex(insertedNode, null, '<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
         actionsBlock.geometry.offset = new mxPoint(-30, -60);
+
+        /* let toolTipContainer = document.createElement("div");
+        toolTipContainer.classList.add("ncmx-tooltip-templates");
+        let tooltipContent = document.createElement("span");
+        tooltipContent.id = "#tooltip_content_"+node.id;
+        let toolTipHeader = document.createElement("strong");
+        let toolTipHeaderText = document.createTextNode(node.name);
+        
+
+        toolTipHeader.appendChild(toolTipHeaderText);
+        tooltipContent.appendChild(toolTipHeader);
+
+        let lineBr = document.createElement("br");
+        let toolTipBody = document.createTextNode(descr);
+        tooltipContent.appendChild(lineBr);
+        tooltipContent.appendChild(toolTipBody);
+        toolTipContainer.appendChild(tooltipContent);
+
+        this.element.appendChild(toolTipContainer); */
+
         for (let icon of node.shapeTags) {
           var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
@@ -401,11 +422,13 @@ export class NcmxgDirective implements AfterViewInit {
         offsetX += 14;
       }
 
-      var nameBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" title="' + child.name + '">' + child.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+      let descr = child.description == null ? " " : child.description;
+
+      var nameBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;overflow:hidden;word-wrap:break-word;text-overflow:ellipsis" class="ncmx-tooltip" title="<strong>'+child.name+'</strong>\r\n'+descr+'">' + child.name + '</div>', 1, 1, 240, 16, 'fontColor=#000;fontSize=14;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
       nameBlock.geometry.offset = new mxPoint(-281, -55);
 
-      let descr = child.description == null ? " " : child.description;
-      var descBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" title="' + descr + '">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
+      
+      var descBlock = graph.insertVertex(currentInserted, null, '<div style="width:220px;height:30px;overflow:hidden;word-wrap:break-word;white-space:break-spaces;text-overflow:ellipsis;" class="ncmx-tooltip" title="<strong>'+child.name+'</strong>\r\n'+descr+'">' + descr + '</div>', 1, 1, 240, 32, 'fontSize=12;strokeOpacity=0;align=left;verticalAlign=top;fillColor=none;', true);
       descBlock.geometry.offset = new mxPoint(-280, -36);
 
       var actionsBlock = graph.insertVertex(currentInserted, null, '<span class="noselect" id=' + child.id + ' onClick="nc.mxg.menuCallback(\'' + child.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
