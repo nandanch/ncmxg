@@ -361,25 +361,6 @@ export class NcmxgDirective implements AfterViewInit {
         var actionsBlock = graph.insertVertex(insertedNode, null, '<span class="noselect" id=' + node.id + ' onClick="nc.mxg.menuCallback(\'' + node.id + '\')" style="color:#757575;font-weight:bold;font-size:14px;cursor:pointer;"><i class="fas fa-ellipsis-h ml-2" title="Options"></i></span>', 1, 1, 30, 60, 'fontSize=12;strokeOpacity=0;align=center;verticalAlign=middle;fillColor=none;', true);
         actionsBlock.geometry.offset = new mxPoint(-30, -60);
 
-        /* let toolTipContainer = document.createElement("div");
-        toolTipContainer.classList.add("ncmx-tooltip-templates");
-        let tooltipContent = document.createElement("span");
-        tooltipContent.id = "#tooltip_content_"+node.id;
-        let toolTipHeader = document.createElement("strong");
-        let toolTipHeaderText = document.createTextNode(node.name);
-        
-
-        toolTipHeader.appendChild(toolTipHeaderText);
-        tooltipContent.appendChild(toolTipHeader);
-
-        let lineBr = document.createElement("br");
-        let toolTipBody = document.createTextNode(descr);
-        tooltipContent.appendChild(lineBr);
-        tooltipContent.appendChild(toolTipBody);
-        toolTipContainer.appendChild(tooltipContent);
-
-        this.element.appendChild(toolTipContainer); */
-
         for (let icon of node.shapeTags) {
           var overlay = new mxCellOverlay(new mxImage('assets/mxgraph/images/' + icon + '.svg', 14, 14), 'Overlay tooltip', mxConstants.ALIGN_LEFT, mxConstants.ALIGN_TOP, new mxPoint(offsetX, 0));
           graph.addCellOverlay(insertedNode, overlay);
