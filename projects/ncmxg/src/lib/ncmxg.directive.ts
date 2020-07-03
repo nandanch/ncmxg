@@ -151,12 +151,9 @@ export class NcmxgDirective implements AfterViewInit {
         this.graph.setEnabled(false);
         this.graph.getView().setScale(0.8);
         let jq = window['$'];
-        console.log(jq)
-        console.log(jq('.ncmx-tooltip'));
         jq('.ncmx-tooltip').tooltipster({
           contentAsHTML: true
         });
-        console.log(jq.tooltipster);
       }
     }
   }
