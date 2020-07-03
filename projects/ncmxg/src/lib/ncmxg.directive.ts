@@ -96,6 +96,12 @@ export class NcmxgDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    let jq = window['$'];
+    jq(document).ready(function() {
+      jq('.ncmx-tooltip').tooltipster({
+        contentAsHTML: true
+      });
+    });
     this.gdata = this.gdata || [];
     this.gwidth = this.gwidth * 100 || 12000;
 
